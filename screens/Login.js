@@ -16,6 +16,13 @@ export default function Login({navigation}) {
     }
   }
 
+  const createAccount = () => {
+    navigation.reset({ 
+      index: 1,
+      routes: [{ name: 'CreateAccount' }],
+    });
+  }
+
   return (
     <View style={styles.container}>
       {/*<View style = {styles.topbar}></View>*/}
@@ -23,16 +30,14 @@ export default function Login({navigation}) {
         source={require('../assets/logo.png')}
         style={ styles.logo }
       />
-      <Text style={{color: '#7F7F7F', marginBottom: 20}} h1> Requerimentos </Text>
+      <Text style={styles.h1} h1> Requerimentos </Text>
       <Input 
         placeholder="Usuário" 
-        leftIcon={{ type: 'font-awesome', name: 'user' }}
         inputContainerStyle={styles.input}
         onChangeText={value => setUsername(value)}
       />
       <Input 
         placeholder="Senha" 
-        leftIcon={{ type: 'font-awesome', name: 'lock' }}
         inputContainerStyle={styles.input}
         onChangeText={value => setPassword(value)}
         secureTextEntry={true}
@@ -45,7 +50,7 @@ export default function Login({navigation}) {
         onPress={() => login()}
       />
       <Pressable>
-        <Text style={{color: '#457918', fontWeight: 'bold'}}> Criar conta </Text>
+        <Text style={styles.create} onPress={() => createAccount()}> Criar conta </Text>
       </Pressable>
     </View>
   );
@@ -69,12 +74,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#A2E700',
     height: 100,
     width: '100%',
-    marginTop: -240,
+    marginTop: -240
   }, 
   button: {
     backgroundColor: '#A2E700',
     borderRadius: 3,
-    color: '#457918',
+    color: '#457918'
   },
   containerButton: {
     width: '50%',
@@ -84,6 +89,14 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '90%',
-    alignSelf: 'center',
+    alignSelf: 'center'
+  }, 
+  h1: {
+    color: '#7F7F7F', 
+    marginBottom: 20
+  },
+  create: {
+    color: '#457918', 
+    fontWeight: 'bold'
   }
 });
