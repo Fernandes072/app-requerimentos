@@ -6,8 +6,8 @@ export default function CreateAccount({navigation}) {
 
     const[name, setName] = useState(null);
     const[email, setEmail] = useState(null);
-    const[matricula, setMatricula] = useState(null);
-    const[curso, setCurso] = useState(null);
+    const[registration, setRegistration] = useState(null);
+    const[course, setCourse] = useState(null);
     const[username, setUsername] = useState(null);
     const[password, setPassword] = useState(null);
     const[confirmPassword, setConfirmPassword] = useState(null);
@@ -46,12 +46,12 @@ export default function CreateAccount({navigation}) {
             <Input 
                 placeholder="Matrícula" 
                 inputContainerStyle={styles.input}
-                onChangeText={value => setMatricula(value)}
+                onChangeText={value => setRegistration(value)}
             />
             <Input 
                 placeholder="Curso" 
                 inputContainerStyle={styles.input}
-                onChangeText={value => setCurso(value)}
+                onChangeText={value => setCourse(value)}
             />
             <Input 
                 placeholder="Usuário" 

@@ -1,19 +1,35 @@
 import { useState } from 'react';
-import { StyleSheet, View, Image, Pressable } from 'react-native';
+import { StyleSheet, View, Image, Pressable, Alert } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
+import api from '../src/Services/Api';
 
 export default function Login({navigation}) {
 
-  const [username, setUsername] = useState(null);
+  const [registration, setRegistration] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const login = () => {
-    if (username == "abc" || password == "def") {
-      navigation.reset({ 
-        index: 0,
-        routes: [{ name: 'Home' }],
-      });
+  async function loginVerify(){
+    console.log(registration, password);
+    try {
+      const response = await api.get(`/users/${registration}`);
+      console.log(response.data);
+      if (response.data.password == password) {
+          login();
+      } else{
+        throw new Error();
+      }
+      
+    } catch (error) {
+      Alert.alert("Aviso","Usuário ou senha inválidos!");
+      console.log("Usuário ou senha inválidos!");
     }
+  }
+
+  const login = () => {
+    navigation.reset({ 
+      index: 0,
+      routes: [{ name: 'Home' }],
+    });
   }
 
   const createAccount = () => {
@@ -25,16 +41,15 @@ export default function Login({navigation}) {
 
   return (
     <View style={styles.container}>
-      {/*<View style = {styles.topbar}></View>*/}
       <Image 
         source={require('../assets/logo.png')}
         style={ styles.logo }
       />
       <Text style={styles.h1} h1> Requerimentos </Text>
       <Input 
-        placeholder="Usuário" 
+        placeholder="Matrícula" 
         inputContainerStyle={styles.input}
-        onChangeText={value => setUsername(value)}
+        onChangeText={value => setRegistration(value)}
       />
       <Input 
         placeholder="Senha" 
@@ -47,7 +62,7 @@ export default function Login({navigation}) {
         titleStyle={{ color: '#457918'}}
         buttonStyle={styles.button}
         containerStyle={styles.containerButton}
-        onPress={() => login()}
+        onPress={() => loginVerify()}
       />
       <Pressable>
         <Text style={styles.create} onPress={() => createAccount()}> Criar conta </Text>
@@ -70,12 +85,6 @@ const styles = StyleSheet.create({
     marginTop: -300,
     marginBottom: -70
   },
-  topbar: {
-    backgroundColor: '#A2E700',
-    height: 100,
-    width: '100%',
-    marginTop: -240
-  }, 
   button: {
     backgroundColor: '#A2E700',
     borderRadius: 3,
