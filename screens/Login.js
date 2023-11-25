@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, View, Image, Pressable, Alert, TextInput, TouchableOpacity } from 'react-native';
-import { Button, Input, Text } from 'react-native-elements';
+import { StyleSheet, View, Image, Alert, TextInput, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native-elements';
 import api from '../src/Services/Api';
 
 export default function Login({navigation}) {
@@ -27,15 +27,15 @@ export default function Login({navigation}) {
 
     const login = () => {
         navigation.reset({ 
-        index: 0,
-        routes: [{ name: 'Home' }],
+            index: 0,
+            routes: [{ name: 'Home' }],
         });
     }
 
     const createAccount = () => {
         navigation.reset({ 
-        index: 1,
-        routes: [{ name: 'CreateAccount' }],
+            index: 1,
+            routes: [{ name: 'CreateAccount' }],
         });
     }
 
@@ -61,7 +61,7 @@ export default function Login({navigation}) {
                 <View style={styles.containerRegister}>
                     <Text style={styles.notHave}>Não possui uma conta? </Text>
                     <TouchableOpacity style={styles.registerButton}>
-                        <Text style={styles.RegisterText} onPress={() => createAccount()}>Registre-se</Text>
+                        <Text style={styles.registerText} onPress={() => createAccount()}>Registre-se</Text>
                     </TouchableOpacity>
                 </View>
             </View>    
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     },
     registerButton: {
     },
-    RegisterText: {
+    registerText: {
         color: '#457918',
         fontSize: 14,
         fontWeight: 'bold'
