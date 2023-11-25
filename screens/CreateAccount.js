@@ -74,6 +74,9 @@ export default function CreateAccount({navigation}) {
                 inputContainerStyle={styles.input}
                 onChangeText={value => setName(value)}
             />
+            <Pressable>
+                <Text style={styles.create} onPress={() => back()}> Fazer login </Text>
+            </Pressable>
             <Input 
                 placeholder="Email" 
                 inputContainerStyle={styles.input}

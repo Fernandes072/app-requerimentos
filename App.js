@@ -6,7 +6,7 @@ import CreateAccount from './screens/CreateAccount';
 
 const Stack = createStackNavigator();
 
-function MyStack() {
+function MyStack() { 
   return (
     <Stack.Navigator
     screenOptions={{headerShown:false}}>
