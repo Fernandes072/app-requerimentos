@@ -171,25 +171,25 @@ export default function CreateAccount({navigation}) {
 
                     <TextInput style={styles.input} 
                         onChangeText={value => {setName(value); setIsNameSubmitted(false)}} placeholder="Nome" returnKeyType="next" 
-                        onSubmitEditing={() => {emailRef.current.focus(); setIsNameSubmitted(true); setName(name.trim())}} 
-                        onBlur={() => {setIsNameSubmitted(true); setName(name.trim())}}
-                        value = {isNameSubmitted ? name.trim() : name}
+                        onSubmitEditing={() => {emailRef.current.focus(); setIsNameSubmitted(true)}} 
+                        onBlur={() => {setIsNameSubmitted(true)}}
+                        value = {isNameSubmitted ? (name != null ? name.trim() : name) : name}
                     />
                     {errorName ? <Text style={styles.errorMessage}>{errorName}</Text> : null}
 
                     <TextInput style={styles.input} 
                         onChangeText={value => {setEmail(value); setIsEmailSubmitted(false)}} placeholder="Email" returnKeyType="next" 
-                        onSubmitEditing={() => {registrationRef.current.focus(); setIsEmailSubmitted(true); setEmail(email.trim())}} ref={emailRef}
-                        onBlur={() => {setIsEmailSubmitted(true); setEmail(email.trim())}}
-                        value = {isEmailSubmitted ? email.trim() : email}
+                        onSubmitEditing={() => {registrationRef.current.focus(); setIsEmailSubmitted(true)}} ref={emailRef}
+                        onBlur={() => {setIsEmailSubmitted(true)}}
+                        value = {isEmailSubmitted ? (email != null ? email.trim() : email) : email}
                     />
                     {errorEmail ? <Text style={styles.errorMessage}>{errorEmail}</Text> : null}
 
                     <TextInput style={styles.input} 
                         onChangeText={value => {setRegistration(value); setIsRegistrationSubmitted(false)}} placeholder="Matrícula" returnKeyType="next"
-                        onSubmitEditing={() => {usernameRef.current.focus(); setIsRegistrationSubmitted(true); setRegistration(registration.trim())}} ref={registrationRef}
-                        onBlur={() => {setIsRegistrationSubmitted(true); setRegistration(registration.trim())}}
-                        value = {isRegistrationSubmitted ? registration.trim() : registration}
+                        onSubmitEditing={() => {usernameRef.current.focus(); setIsRegistrationSubmitted(true)}} ref={registrationRef}
+                        onBlur={() => {setIsRegistrationSubmitted(true)}}
+                        value = {isRegistrationSubmitted ? (registration != null ? registration.trim() : registration) : registration}
                     />
                     {errorRegistration ? <Text style={styles.errorMessage}>{errorRegistration}</Text> : null}
                     
@@ -210,9 +210,9 @@ export default function CreateAccount({navigation}) {
 
                     <TextInput style={styles.input} 
                         onChangeText={value => {setUsername(value); setIsUsernameSubmitted(false)}} placeholder="Usuário" returnKeyType="next" 
-                        onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true); setUsername(username.trim())}} ref={usernameRef}
-                        onBlur={() => {setIsUsernameSubmitted(true); setUsername(username.trim())}}
-                        value = {isUsernameSubmitted ? username.trim() : username}
+                        onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true)}} ref={usernameRef}
+                        onBlur={() => {setIsUsernameSubmitted(true)}}
+                        value = {isUsernameSubmitted ? (username != null ? username.trim() : username) : username}
                     />
                     {errorUsername ? <Text style={styles.errorMessage}>{errorUsername}</Text> : null}
 
@@ -331,7 +331,8 @@ const styles = StyleSheet.create({
         width: '47%',
         flexDirection: 'row', 
         marginTop: 14,
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        marginBottom: '10%',
     },
     notHave: {
         color: '#7F7F7F',

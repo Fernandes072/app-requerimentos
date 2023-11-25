@@ -60,9 +60,9 @@ export default function Login({navigation}) {
             <View style={styles.containerForm}>
                 <TextInput style={styles.input} 
                     onChangeText={value => {setUsername(value); setIsUsernameSubmitted(false)}} placeholder="Usuário" returnKeyType="next" 
-                    onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true); setUsername(username.trim())}} ref={usernameRef}
-                    onBlur={() => {setIsUsernameSubmitted(true); setUsername(username.trim())}}
-                    value = {isUsernameSubmitted ? username.trim() : username}
+                    onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true)}} ref={usernameRef}
+                    onBlur={() => {setIsUsernameSubmitted(true)}}
+                    value = {isUsernameSubmitted ? (username != null ? username.trim() : username) : username}
                 />
 
                 <TextInput style={styles.input} 
