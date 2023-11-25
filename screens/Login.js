@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { StyleSheet, View, Image, Alert, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Alert, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-elements';
 import api from '../src/Services/Api';
 
@@ -8,6 +8,10 @@ export default function Login({navigation}) {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
+    const [errorLogin, setErrorLogin] = useState(null);
+
+    const [isUsernameSubmitted, setIsUsernameSubmitted] = useState(false);
+
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
 
@@ -15,14 +19,14 @@ export default function Login({navigation}) {
         console.log(username, password);
         try {
             const response = await api.get(`/users/username/${username}`);
-            console.log(response.data);
             if (response.data.password == password) {
                 login();
             } else{
                 throw new Error();
             }
         } catch (error) {
-            Alert.alert("Aviso","Usuário ou senha inválidos!");
+            setErrorLogin("Usuário ou senha inválidos!");
+            //Alert.alert("Aviso","Usuário ou senha inválidos!");
             console.log("Usuário ou senha inválidos!");
         }
     }
@@ -44,7 +48,7 @@ export default function Login({navigation}) {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.containerHeader}>
                 <Image 
                     source={require('../assets/logo.png')}
@@ -54,9 +58,19 @@ export default function Login({navigation}) {
             </View>
 
             <View style={styles.containerForm}>
-                <TextInput style={styles.input} onChangeText={value => setUsername(value)} placeholder="Usuário" returnKeyType="next" onSubmitEditing={() => passwordRef.current.focus()} ref={usernameRef}/>
+                <TextInput style={styles.input} 
+                    onChangeText={value => {setUsername(value); setIsUsernameSubmitted(false)}} placeholder="Usuário" returnKeyType="next" 
+                    onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true); setUsername(username.trim())}} ref={usernameRef}
+                    onBlur={() => {setIsUsernameSubmitted(true); setUsername(username.trim())}}
+                    value = {isUsernameSubmitted ? username.trim() : username}
+                />
 
-                <TextInput style={styles.input} onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true} returnKeyType="done" onSubmitEditing={() => loginVerify()} ref={passwordRef}/>
+                <TextInput style={styles.input} 
+                    onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true} returnKeyType="done" 
+                    onSubmitEditing={() => loginVerify()} ref={passwordRef}
+                />
+
+                {errorLogin ? <Text style={styles.errorMessage}>{errorLogin}</Text> : null}
 
                 <TouchableOpacity style={styles.button}  onPress={() => loginVerify()}>
                     <Text style={styles.buttonText}>Entrar</Text>
@@ -69,7 +83,7 @@ export default function Login({navigation}) {
                     </TouchableOpacity>
                 </View>
             </View>    
-        </View>
+        </ScrollView>
     );
 }
 
@@ -110,6 +124,13 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 16,
         marginBottom: 12
+    },
+    errorMessage: {
+        color: '#FF0000',
+        fontSize: 13,
+        alignSelf: 'center',
+        marginTop: "3%",
+        marginBottom: '-3%'
     },
     button: {
         backgroundColor: '#A2E700',
