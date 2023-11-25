@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { StyleSheet, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { useState, useRef } from 'react';
+import { StyleSheet, View, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
+import { Ionicons } from '@expo/vector-icons';
 import api from '../src/Services/Api';
 
 export default function CreateAccount({navigation}) {
@@ -10,11 +11,18 @@ export default function CreateAccount({navigation}) {
     const[email, setEmail] = useState(null);
     const[registration, setRegistration] = useState(null);
     const[course, setCourse] = useState(null);
+    const[username, setUsername] = useState(null);
     const[password, setPassword] = useState(null);
     const[confirmPassword, setConfirmPassword] = useState(null);
 
+    const emailRef = useRef(null);
+    const registrationRef = useRef(null);
+    const usernameRef = useRef(null);
+    const passwordRef = useRef(null);
+    const confirmPasswordRef = useRef(null);
+
     async function createAccountVerify(){
-        console.log(name, email, registration, course, password, confirmPassword);
+        console.log(name, email, registration, course, username, password, confirmPassword);
 
         let findedRegistration = false;
         try {
@@ -27,18 +35,28 @@ export default function CreateAccount({navigation}) {
             console.log("Matrícula já cadastrada!");
         }
 
-        /*let findedEmail = false;
+        let findedEmail = false;
         try{
-            const response = await api.get(`/users/${email}`);
+            const response = await api.get(`/users/email/${email}`);
             console.log(response.data);
             findedEmail = true;
         } catch (error) {
         }
         if (findedEmail) {
             console.log("Email já cadastrado!");
-        }*/
+        }
 
-        //fazer consulta pelo email e pela usuario
+        let findedUsername = false;
+        try{
+            const response = await api.get(`/users/username/${username}`);
+            console.log(response.data);
+            findedUsername = true;
+        } catch (error) {
+        }
+        if (findedUsername) {
+            console.log("Usuário já cadastrado!");
+        }
+
 
         let passwordMatch = false;
         if (password == confirmPassword) {
@@ -47,12 +65,13 @@ export default function CreateAccount({navigation}) {
             console.log("Senhas não conferem!");
         }
 
-        if (!findedRegistration && /*!findedEmail && */ passwordMatch) {
+        if (!findedRegistration && !findedEmail && !findedUsername && passwordMatch) {
             try {
                 const response = await api.post('/users', {
                     name: name,
                     email: email,
                     registration: registration,
+                    username: username,
                     course: course,
                     password: password
                 });
@@ -80,50 +99,63 @@ export default function CreateAccount({navigation}) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.containerHeader}>
-                <Image 
-                    source={require('../assets/logo.png')}
-                    style={ styles.logo }
-                />
-                <Text style={styles.title}>Requerimentos</Text>
+
+            <View style={styles.containerArrowBack}>
+                <TouchableOpacity onPress={() => back()} style={styles.arrowBack}>
+                    <Ionicons name="arrow-back" size={30} color="black" />
+                </TouchableOpacity>
             </View>
 
-            <View style={styles.containerForm}>
-                <TextInput style={styles.input} onChangeText={value => setName(value)} placeholder="Nome"/>
+            <ScrollView>
 
-                <TextInput style={styles.input} onChangeText={value => setEmail(value)} placeholder="Email"/>
+                <View style={styles.containerHeader}>
+                    <Image 
+                        source={require('../assets/logo.png')}
+                        style={ styles.logo }
+                    />
 
-                <TextInput style={styles.input} onChangeText={value => setRegistration(value)} placeholder="Matrícula"/>
-
-                <View style={styles.pickerContainer}>
-                    <Picker
-                        selectedValue={course}
-                        onValueChange={value => setCourse(value)}
-                        style={styles.picker}
-                    >
-                    <Picker.Item label="Selecione um curso" value="" />
-                    <Picker.Item label="Ciência da Computação" value="1" />
-                    <Picker.Item label="Logística" value="2" />
-                    <Picker.Item label="Manutenção e Suporte em Informática" value="3" />
-                    <Picker.Item label="Agronegócio" value="4" />
-                    </Picker>
+                    <Text style={styles.title}>Requerimentos</Text>
                 </View>
 
-                <TextInput style={styles.input} onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true}/>
+                <View style={styles.containerForm}>
+                    <TextInput style={styles.input} onChangeText={value => setName(value)} placeholder="Nome" returnKeyType="next" onSubmitEditing={() => emailRef.current.focus()}/>
 
-                <TextInput style={styles.input} onChangeText={value => setConfirmPassword(value)} placeholder="Confirmar senha" secureTextEntry={true}/>
+                    <TextInput style={styles.input} onChangeText={value => setEmail(value)} placeholder="Email" returnKeyType="next" onSubmitEditing={() => registrationRef.current.focus()} ref={emailRef}/>
 
-                <TouchableOpacity style={styles.button}  onPress={() => createAccountVerify()}>
-                    <Text style={styles.buttonText}>Criar conta</Text>
-                </TouchableOpacity>
+                    <TextInput style={styles.input} onChangeText={value => setRegistration(value)} placeholder="Matrícula" returnKeyType="next" onSubmitEditing={() => usernameRef.current.focus()} ref={registrationRef}/>
 
-                <View style={styles.containerLogin}>
-                    <Text style={styles.notHave}>Já possui uma conta? </Text>
-                    <TouchableOpacity style={styles.loginButton}>
-                        <Text style={styles.loginText} onPress={() => back()}>Login</Text>
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            selectedValue={course}
+                            onValueChange={value => setCourse(value)}
+                            style={styles.picker}
+                        >
+                        <Picker.Item label="Selecione um curso" value="" />
+                        <Picker.Item label="Ciência da Computação" value="1" />
+                        <Picker.Item label="Logística" value="2" />
+                        <Picker.Item label="Manutenção e Suporte em Informática" value="3" />
+                        <Picker.Item label="Agronegócio" value="4" />
+                        </Picker>
+                    </View>
+
+                    <TextInput style={styles.input} onChangeText={value => setUsername(value)} placeholder="Usuário" returnKeyType="next" onSubmitEditing={() => passwordRef.current.focus()} ref={usernameRef}/>
+
+                    <TextInput style={styles.input} onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true} returnKeyType="next" onSubmitEditing={() => confirmPasswordRef.current.focus()} ref={passwordRef}/>
+                    
+                    <TextInput style={styles.input} onChangeText={value => setConfirmPassword(value)} placeholder="Confirmar senha" secureTextEntry={true} returnKeyType="done" onSubmitEditing={() => createAccountVerify()} ref={confirmPasswordRef}/>
+
+                    <TouchableOpacity style={styles.button}  onPress={() => createAccountVerify()}>
+                        <Text style={styles.buttonText}>Criar conta</Text>
                     </TouchableOpacity>
+
+                    <View style={styles.containerLogin}>
+                        <Text style={styles.notHave}>Já possui uma conta? </Text>
+                        <TouchableOpacity style={styles.loginButton}>
+                            <Text style={styles.loginText} onPress={() => back()}>Login</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>    
+            </ScrollView>    
         </View>
     );
 }
@@ -134,11 +166,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#EBEAEF'
     },
     containerHeader: {
-        marginTop: '14%',
+        marginTop: '18%',
         marginBottom: '8%',
         paddingStart: '5%',
         paddingStart: '5%',
         paddingEnd: '5%',
+    },
+    containerArrowBack: {
+        position: 'absolute',
+        top: 0,
+        zIndex: 1,
+        width: '100%',
+        height: 70,
+        backgroundColor: '#EBEAEF',
+    },
+    arrowBack: {
+        marginLeft: '5%',
+        marginTop: '10%',
     },
     logo: {
         width: 300,
@@ -167,7 +211,7 @@ const styles = StyleSheet.create({
         marginBottom: 12
     },
     pickerContainer: {
-        marginBottom: 12,
+        marginBottom: 8,
         backgroundColor: '#EBEAEF',
         marginLeft: '-4.5%',
         marginRight: '-4.5%',

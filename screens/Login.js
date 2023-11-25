@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { StyleSheet, View, Image, Alert, TextInput, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
 import api from '../src/Services/Api';
 
 export default function Login({navigation}) {
 
-    const [registration, setRegistration] = useState(null);
+    const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
+    const usernameRef = useRef(null);
+    const passwordRef = useRef(null);
+
     async function loginVerify(){
-        console.log("Abc");
-        console.log(registration, password);
+        console.log(username, password);
         try {
-            const response = await api.get(`/users/${registration}`);
+            const response = await api.get(`/users/username/${username}`);
             console.log(response.data);
             if (response.data.password == password) {
                 login();
@@ -35,7 +37,9 @@ export default function Login({navigation}) {
     const createAccount = () => {
         navigation.reset({ 
             index: 1,
-            routes: [{ name: 'CreateAccount' }],
+            routes: [{ name: 'Login' },
+                    { name: 'CreateAccount' }
+            ],
         });
     }
 
@@ -50,9 +54,9 @@ export default function Login({navigation}) {
             </View>
 
             <View style={styles.containerForm}>
-                <TextInput style={styles.input} onChangeText={value => setRegistration(value)} placeholder="Matrícula"/>
+                <TextInput style={styles.input} onChangeText={value => setUsername(value)} placeholder="Usuário" returnKeyType="next" onSubmitEditing={() => passwordRef.current.focus()} ref={usernameRef}/>
 
-                <TextInput style={styles.input} onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true}/>
+                <TextInput style={styles.input} onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true} returnKeyType="done" onSubmitEditing={() => loginVerify()} ref={passwordRef}/>
 
                 <TouchableOpacity style={styles.button}  onPress={() => loginVerify()}>
                     <Text style={styles.buttonText}>Entrar</Text>
