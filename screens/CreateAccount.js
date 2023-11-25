@@ -15,59 +15,116 @@ export default function CreateAccount({navigation}) {
     const[password, setPassword] = useState(null);
     const[confirmPassword, setConfirmPassword] = useState(null);
 
+    const [errorName, setErrorName] = useState(null);
+    const [errorEmail, setErrorEmail] = useState(null);
+    const [errorRegistration, setErrorRegistration] = useState(null);
+    const [errorCourse, setErrorCourse] = useState(null);
+    const [errorUsername, setErrorUsername] = useState(null);
+    const [errorPassword, setErrorPassword] = useState(null);
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState(null);
+
+    const [isNameSubmitted, setIsNameSubmitted] = useState(false);
+    const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
+    const [isRegistrationSubmitted, setIsRegistrationSubmitted] = useState(false);
+    const [isUsernameSubmitted, setIsUsernameSubmitted] = useState(false);
+
     const emailRef = useRef(null);
     const registrationRef = useRef(null);
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
 
-    async function createAccountVerify(){
+    const isValid = async () => {
         console.log(name, email, registration, course, username, password, confirmPassword);
+        let error = false;
 
-        let findedRegistration = false;
-        try {
-            const response = await api.get(`/users/${registration}`);
-            console.log(response.data);
-            findedRegistration = true;
-        } catch (error) {
-        }
-        if (findedRegistration) {
-            console.log("Matrícula já cadastrada!");
+        if (name == null || name.split(' ').length < 2) {
+            setErrorName("Nome inválido!");
+            error = true;
+        } else {
+            setErrorName(null);
         }
 
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+        if (email == null || !emailRegex.test(email) || (await emailVerify())) {
+            setErrorEmail("Email inválido!");
+            error = true;
+        } else {
+            setErrorEmail(null);
+        }
+
+        if (registration == null || registration.length < 10 || (await registrationVerify())) {
+            setErrorRegistration("Matrícula inválida!");
+            error = true;
+        } else {
+            setErrorRegistration(null);
+        }
+
+        if (course == null) {
+            setErrorCourse("Curso inválido!");
+            error = true;
+        } else {
+            setErrorCourse(null);
+        }
+
+        if (username == null || username.length < 5 || (await usernameVerify())) {
+            setErrorUsername("Usuário inválido!");
+            error = true;
+        } else {
+            setErrorUsername(null);
+        }
+
+        if (password == null || password.length < 6) {
+            setErrorPassword("Senha inválida!");
+            error = true;
+        } else {
+            setErrorPassword(null);
+        }
+
+        if (password != confirmPassword) {
+            setErrorConfirmPassword("Senhas não conferem!");
+            error = true;
+        } else {
+            setErrorConfirmPassword(null);
+        }
+        
+        return !error;
+    }
+
+    async function emailVerify(){
         let findedEmail = false;
         try{
-            const response = await api.get(`/users/email/${email}`);
-            console.log(response.data);
+            await api.get(`/users/email/${email}`);
             findedEmail = true;
         } catch (error) {
         }
-        if (findedEmail) {
-            console.log("Email já cadastrado!");
-        }
+        return findedEmail;
+    }
 
+    async function registrationVerify(){
+        let findedRegistration = false;
+        try {
+            await api.get(`/users/${registration}`);
+            findedRegistration = true;
+        } catch (error) {
+        }
+        return findedRegistration;
+    }
+
+    async function usernameVerify(){
         let findedUsername = false;
-        try{
-            const response = await api.get(`/users/username/${username}`);
-            console.log(response.data);
+        try {
+            await api.get(`/users/username/${username}`);
             findedUsername = true;
         } catch (error) {
         }
-        if (findedUsername) {
-            console.log("Usuário já cadastrado!");
-        }
+        return findedUsername;
+    }
 
-
-        let passwordMatch = false;
-        if (password == confirmPassword) {
-            passwordMatch = true;
-        } else {
-            console.log("Senhas não conferem!");
-        }
-
-        if (!findedRegistration && !findedEmail && !findedUsername && passwordMatch) {
+    const createAccount = async () => {
+        if ((await isValid())) {
             try {
-                const response = await api.post('/users', {
+                await api.post('/users', {
                     name: name,
                     email: email,
                     registration: registration,
@@ -75,19 +132,12 @@ export default function CreateAccount({navigation}) {
                     course: course,
                     password: password
                 });
-                console.log(response.data);
-                createAccount();
+                back();
             } catch (error) {
+                Alert.alert("Aviso","Erro ao criar conta!");
                 console.log("Erro ao criar conta!");
             }
-        }
-    }
-
-    const createAccount = () => {
-        navigation.reset({ 
-            index: 0,
-            routes: [{ name: 'Login' }],
-        });
+        }  
     }
 
     const back = () => {
@@ -118,12 +168,31 @@ export default function CreateAccount({navigation}) {
                 </View>
 
                 <View style={styles.containerForm}>
-                    <TextInput style={styles.input} onChangeText={value => setName(value)} placeholder="Nome" returnKeyType="next" onSubmitEditing={() => emailRef.current.focus()}/>
 
-                    <TextInput style={styles.input} onChangeText={value => setEmail(value)} placeholder="Email" returnKeyType="next" onSubmitEditing={() => registrationRef.current.focus()} ref={emailRef}/>
+                    <TextInput style={styles.input} 
+                        onChangeText={value => {setName(value); setIsNameSubmitted(false)}} placeholder="Nome" returnKeyType="next" 
+                        onSubmitEditing={() => {emailRef.current.focus(); setIsNameSubmitted(true); setName(name.trim())}} 
+                        onBlur={() => {setIsNameSubmitted(true); setName(name.trim())}}
+                        value = {isNameSubmitted ? name.trim() : name}
+                    />
+                    {errorName ? <Text style={styles.errorMessage}>{errorName}</Text> : null}
 
-                    <TextInput style={styles.input} onChangeText={value => setRegistration(value)} placeholder="Matrícula" returnKeyType="next" onSubmitEditing={() => usernameRef.current.focus()} ref={registrationRef}/>
+                    <TextInput style={styles.input} 
+                        onChangeText={value => {setEmail(value); setIsEmailSubmitted(false)}} placeholder="Email" returnKeyType="next" 
+                        onSubmitEditing={() => {registrationRef.current.focus(); setIsEmailSubmitted(true); setEmail(email.trim())}} ref={emailRef}
+                        onBlur={() => {setIsEmailSubmitted(true); setEmail(email.trim())}}
+                        value = {isEmailSubmitted ? email.trim() : email}
+                    />
+                    {errorEmail ? <Text style={styles.errorMessage}>{errorEmail}</Text> : null}
 
+                    <TextInput style={styles.input} 
+                        onChangeText={value => {setRegistration(value); setIsRegistrationSubmitted(false)}} placeholder="Matrícula" returnKeyType="next"
+                        onSubmitEditing={() => {usernameRef.current.focus(); setIsRegistrationSubmitted(true); setRegistration(registration.trim())}} ref={registrationRef}
+                        onBlur={() => {setIsRegistrationSubmitted(true); setRegistration(registration.trim())}}
+                        value = {isRegistrationSubmitted ? registration.trim() : registration}
+                    />
+                    {errorRegistration ? <Text style={styles.errorMessage}>{errorRegistration}</Text> : null}
+                    
                     <View style={styles.pickerContainer}>
                         <Picker
                             selectedValue={course}
@@ -137,14 +206,29 @@ export default function CreateAccount({navigation}) {
                         <Picker.Item label="Agronegócio" value="4" />
                         </Picker>
                     </View>
+                    {errorCourse ? <Text style={styles.errorMessage}>{errorCourse}</Text> : null}
 
-                    <TextInput style={styles.input} onChangeText={value => setUsername(value)} placeholder="Usuário" returnKeyType="next" onSubmitEditing={() => passwordRef.current.focus()} ref={usernameRef}/>
+                    <TextInput style={styles.input} 
+                        onChangeText={value => {setUsername(value); setIsUsernameSubmitted(false)}} placeholder="Usuário" returnKeyType="next" 
+                        onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true); setUsername(username.trim())}} ref={usernameRef}
+                        onBlur={() => {setIsUsernameSubmitted(true); setUsername(username.trim())}}
+                        value = {isUsernameSubmitted ? username.trim() : username}
+                    />
+                    {errorUsername ? <Text style={styles.errorMessage}>{errorUsername}</Text> : null}
 
-                    <TextInput style={styles.input} onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true} returnKeyType="next" onSubmitEditing={() => confirmPasswordRef.current.focus()} ref={passwordRef}/>
-                    
-                    <TextInput style={styles.input} onChangeText={value => setConfirmPassword(value)} placeholder="Confirmar senha" secureTextEntry={true} returnKeyType="done" onSubmitEditing={() => createAccountVerify()} ref={confirmPasswordRef}/>
+                    <TextInput style={styles.input} 
+                        onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true} returnKeyType="next" 
+                        onSubmitEditing={() => confirmPasswordRef.current.focus()} ref={passwordRef}
+                    />
+                    {errorPassword ? <Text style={styles.errorMessage}>{errorPassword}</Text> : null}
 
-                    <TouchableOpacity style={styles.button}  onPress={() => createAccountVerify()}>
+                    <TextInput style={styles.input} 
+                        onChangeText={value => setConfirmPassword(value)} placeholder="Confirmar senha" secureTextEntry={true} returnKeyType="done" 
+                        onSubmitEditing={() => createAccount()} ref={confirmPasswordRef}
+                    />
+                    {errorConfirmPassword ? <Text style={styles.errorMessage}>{errorConfirmPassword}</Text> : null}
+
+                    <TouchableOpacity style={styles.button}  onPress={() => createAccount()}>
                         <Text style={styles.buttonText}>Criar conta</Text>
                     </TouchableOpacity>
 
@@ -209,6 +293,12 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 16,
         marginBottom: 12
+    },
+    errorMessage: {
+        color: '#FF0000',
+        fontSize: 13,
+        marginTop: '-3%',
+        marginLeft: '2%',
     },
     pickerContainer: {
         marginBottom: 8,
