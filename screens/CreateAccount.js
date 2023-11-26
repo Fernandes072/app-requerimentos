@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
         paddingEnd: '5%',
     },
     input: {
-        borderBottomColor: '#7F7F7F',
+        borderBottomColor: '#457918',
         borderBottomWidth: 1,
         height: 40,
         fontSize: 16,

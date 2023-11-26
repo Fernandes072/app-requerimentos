@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './screens/Login';
-import Home from './screens/HomePage';
+import Pages from './screens/Pages';
 import CreateAccount from './screens/CreateAccount';
 
 const Stack = createStackNavigator();
@@ -11,7 +11,7 @@ function MyStack() {
     <Stack.Navigator
     screenOptions={{headerShown:false}}>
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Pages" component={Pages} />
       <Stack.Screen name="CreateAccount" component={CreateAccount} />
     </Stack.Navigator>
   );
