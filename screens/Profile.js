@@ -1,15 +1,22 @@
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import {  Button, Text } from 'react-native-elements';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import api from '../src/Services/Api';
 
 export default function Profile({navigation}) {
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState();
+
+    useEffect(() => {
+        getUser();
+    }, []);
 
     async function getUser(){
         try {
-            setUser(await AsyncStorage.getItem('user'));
+            //setUser(JSON.parse(await AsyncStorage.getItem('user')))
+            setUser(JSON.parse(await AsyncStorage.getItem('user')));
         } catch (error) {
             console.log("Erro ao buscar usuário!");
         }
@@ -32,20 +39,98 @@ export default function Profile({navigation}) {
     }
   
     return (
-      <View style={styles.container}>
-        <Text h1> Home </Text>
-        <Button title = "Buscar" onPress={() => getUser()} />
-        <Button title = "Sair" onPress={() => deleteSave()} />
-        <Text> {user} </Text>  
-      </View>
+        <View style={styles.container}>
+
+            <View style={styles.topBar}></View>
+
+            <ScrollView>
+
+                <View style={styles.containerHeader}>
+                    <Image source={user && user.image != null ? require('../assets/userImage.png') : require('../assets/user.png')} style={styles.imageUser} />
+                    <TouchableOpacity onPress={() => console.log("Abc")} style={styles.icon}>
+                        <MaterialCommunityIcons name="account-edit" size={28} />
+                    </TouchableOpacity>  
+                    <Text h4> {user && user.name.split(' ')[0]} {user && user.name.split(' ')[1]} </Text>
+                    <Text h5> {user && user.registration} </Text>
+                </View>
+
+                <View style={styles.containerOptions}>
+                    <TouchableOpacity style={styles.optionButton}  onPress={() => console.log("meus requerimentos")}>
+                        <Text style={styles.optionText}>Meus requerimentos</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.optionButton}  onPress={() => deleteSave()}>
+                    <MaterialCommunityIcons name="logout" size={28} style={styles.icon}/>
+                        <Text style={styles.optionText}>Sair</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </ScrollView>
+                
+        </View>
+
     );
-  }
+}
   
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
+        flex: 1,
+        backgroundColor: '#EBEAEF',
+    },
+    topBar: {
+        position: 'absolute',
+        top: 0,
+        zIndex: 1,
+        width: '100%',
+        height: 25,
+        backgroundColor: '#EBEAEF',
+    },
+    containerHeader: {
+        marginTop: '10%',
+        height: 170,
+        width: '80%',
+        alignSelf: 'center',
+        borderRadius: 10,
+        alignItems: 'center',
+        backgroundColor: '#A2E700',
+    },
+    icon: {
+        position: 'absolute',
+        top: 0,
+        zIndex: 1,
+        marginTop: '3%',
+        alignSelf: 'flex-end',
+        width: 35,
+        height: 25,
+    },
+    imageUser: {
+        width: 100,
+        height: 100,
+        alignSelf: 'center',
+        marginTop: '3%',
+        borderRadius: 50
+    },
+    containerOptions: {
+        flex: 1,
+        marginTop: '7%',
+        width: '50%',
+        backgroundColor: '#EBEAEF',
+        marginBottom: '5%',
+        marginLeft: '10%', //ou 20%
+    },
+    optionButton: {
+        backgroundColor: '#A2E700',
+        width: '100%',
+        height: 40,
+        borderRadius: 4,
+        paddingVertical: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginTop: 14
+    },
+    optionText: {
+        color: '#000000',
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
 });

@@ -24,7 +24,7 @@ export default function UsersAdm({navigation}) {
         } else{
             getUsers();
         }
-      }, [search]);
+    }, [search]);
 
     async function getUsers(){
         try {
@@ -77,7 +77,7 @@ export default function UsersAdm({navigation}) {
                         </TouchableOpacity>
 
                         <View style={styles.containerUserInfo}>
-                            <Text style={styles.userInfo}> {user.registration} - {user.name}</Text>
+                            <Text style={styles.userInfo}> {user.registration} - {user.name.split(' ')[0]} {user.name.split(' ')[1]}</Text>
                             <Text style={styles.userInfo}> {user.courseId.name}</Text>
                         </View> 
                     </View>
