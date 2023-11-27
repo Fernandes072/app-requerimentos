@@ -4,7 +4,6 @@ import React, {useState, useEffect} from 'react';
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../src/Services/Api';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function UsersAdm({navigation}) {
 
@@ -20,7 +19,7 @@ export default function UsersAdm({navigation}) {
     );
 
     useEffect(() => {
-        if (search != '') {
+        if (search != '' && search != null) {
           searchUsers();
         } else{
             getUsers();

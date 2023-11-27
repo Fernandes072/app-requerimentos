@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import UsersAdm from './UsersAdm';
 import HomeAdm from './HomeAdm';
+import Profile from './Profile';
 
 
 const Tab = createBottomTabNavigator();
@@ -14,8 +15,8 @@ export default function Pages() {
     <Tab.Navigator
       initialRouteName="HomeAdm"
       screenOptions={{
-        tabBarActiveTintColor: '#457918',
-        tabBarInactiveTintColor: '#000000',
+        tabBarActiveTintColor: '#000000',
+        tabBarInactiveTintColor: '#457918',
         tabBarStyle: { backgroundColor: '#A2E700' },
         headerShown:false
       }}
@@ -37,6 +38,16 @@ export default function Pages() {
           tabBarLabel: 'Usuários',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-supervisor" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Perfil',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />

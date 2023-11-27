@@ -179,7 +179,7 @@ export default function CreateAccount({navigation}) {
 
                     <TextInput style={styles.input} 
                         onChangeText={value => {setEmail(value); setIsEmailSubmitted(false)}} placeholder="Email" returnKeyType="next" 
-                        onSubmitEditing={() => {registrationRef.current.focus(); setIsEmailSubmitted(true)}} ref={emailRef}
+                        onSubmitEditing={() => {registrationRef.current.focus(); setIsEmailSubmitted(true)}} ref={emailRef} autoCapitalize='none'
                         onBlur={() => {setIsEmailSubmitted(true)}}
                         value = {isEmailSubmitted ? (email != null ? email.trim() : email) : email}
                     />
@@ -211,20 +211,20 @@ export default function CreateAccount({navigation}) {
                     <TextInput style={styles.input} 
                         onChangeText={value => {setUsername(value); setIsUsernameSubmitted(false)}} placeholder="Usuário" returnKeyType="next" 
                         onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true)}} ref={usernameRef}
-                        onBlur={() => {setIsUsernameSubmitted(true)}}
+                        onBlur={() => {setIsUsernameSubmitted(true)}} autoCapitalize='none'
                         value = {isUsernameSubmitted ? (username != null ? username.trim() : username) : username}
                     />
                     {errorUsername ? <Text style={styles.errorMessage}>{errorUsername}</Text> : null}
 
                     <TextInput style={styles.input} 
                         onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true} returnKeyType="next" 
-                        onSubmitEditing={() => confirmPasswordRef.current.focus()} ref={passwordRef}
+                        onSubmitEditing={() => confirmPasswordRef.current.focus()} ref={passwordRef} autoCapitalize='none'
                     />
                     {errorPassword ? <Text style={styles.errorMessage}>{errorPassword}</Text> : null}
 
                     <TextInput style={styles.input} 
                         onChangeText={value => setConfirmPassword(value)} placeholder="Confirmar senha" secureTextEntry={true} returnKeyType="done" 
-                        onSubmitEditing={() => createAccount()} ref={confirmPasswordRef}
+                        onSubmitEditing={() => createAccount()} ref={confirmPasswordRef} autoCapitalize='none'
                     />
                     {errorConfirmPassword ? <Text style={styles.errorMessage}>{errorConfirmPassword}</Text> : null}
 

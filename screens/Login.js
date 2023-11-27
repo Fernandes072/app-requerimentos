@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, View, Image, Alert, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../src/Services/Api';
 
 export default function Login({navigation}) {
@@ -12,7 +13,6 @@ export default function Login({navigation}) {
 
     const [isUsernameSubmitted, setIsUsernameSubmitted] = useState(false);
 
-    const usernameRef = useRef(null);
     const passwordRef = useRef(null);
 
     async function loginVerify(){
@@ -20,6 +20,7 @@ export default function Login({navigation}) {
         try {
             const response = await api.get(`/users/username/${username}`);
             if (response.data.password == password) {
+                await AsyncStorage.setItem('user', JSON.stringify(response.data));
                 login();
             } else{
                 throw new Error();
@@ -28,6 +29,22 @@ export default function Login({navigation}) {
             setErrorLogin("Usuário ou senha inválidos!");
             //Alert.alert("Aviso","Usuário ou senha inválidos!");
             console.log("Usuário ou senha inválidos!");
+        }
+    }
+
+    useEffect(() => {
+        loadSave();
+    }, []);
+
+    async function loadSave(){
+        try {
+            const user = await AsyncStorage.getItem('user');
+            console.log(user);
+            if (user != null) {
+                login();
+            }
+        } catch (error) {
+            console.log("Erro ao carregar usuário!");
         }
     }
 
@@ -60,14 +77,14 @@ export default function Login({navigation}) {
             <View style={styles.containerForm}>
                 <TextInput style={styles.input} 
                     onChangeText={value => {setUsername(value); setIsUsernameSubmitted(false)}} placeholder="Usuário" returnKeyType="next" 
-                    onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true)}} ref={usernameRef}
-                    onBlur={() => {setIsUsernameSubmitted(true)}}
+                    onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true)}}
+                    onBlur={() => {setIsUsernameSubmitted(true)}} autoCapitalize='none'
                     value = {isUsernameSubmitted ? (username != null ? username.trim() : username) : username}
                 />
 
                 <TextInput style={styles.input} 
                     onChangeText={value => setPassword(value)} placeholder="Senha" secureTextEntry={true} returnKeyType="done" 
-                    onSubmitEditing={() => loginVerify()} ref={passwordRef}
+                    onSubmitEditing={() => loginVerify()} ref={passwordRef} autoCapitalize='none'
                 />
 
                 {errorLogin ? <Text style={styles.errorMessage}>{errorLogin}</Text> : null}
