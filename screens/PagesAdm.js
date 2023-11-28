@@ -3,16 +3,16 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import UsersAdm from './UsersAdm';
 import Profile from './Profile';
-import Requeriment from './Requeriment';
 
 
 const Tab = createBottomTabNavigator();
 
-export default function Pages() {
+export default function PagesAdm() {
   return (
     <Tab.Navigator
-      initialRouteName="HomeAdm"
+      initialRouteName="UsersAdm"
       screenOptions={{
         tabBarActiveTintColor: '#000000',
         tabBarInactiveTintColor: '#457918',
@@ -21,12 +21,12 @@ export default function Pages() {
       }}
     >
       <Tab.Screen
-        name="Requeriment"
-        component={Requeriment}
+        name="UsersAdm"
+        component={UsersAdm}
         options={{
-          tabBarLabel: 'Requerimento',
+          tabBarLabel: 'Usuários',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons name="account-supervisor" color={color} size={size} />
           ),
         }}
       />

@@ -21,7 +21,11 @@ export default function Login({navigation}) {
             const response = await api.get(`/users/username/${username}`);
             if (response.data.password == password) {
                 await AsyncStorage.setItem('user', JSON.stringify(response.data));
-                login();
+                if (response.data.administrator == 'yes') {
+                    loginAdm();
+                } else {
+                    login();
+                }
             } else{
                 throw new Error();
             }
@@ -41,7 +45,11 @@ export default function Login({navigation}) {
             const user = await AsyncStorage.getItem('user');
             console.log(user);
             if (user != null) {
-                login();
+                if (JSON.parse(user).administrator == 'yes') {
+                    loginAdm();
+                } else {
+                    login();
+                }
             }
         } catch (error) {
             console.log("Erro ao carregar usuário!");
@@ -52,6 +60,13 @@ export default function Login({navigation}) {
         navigation.reset({ 
             index: 0,
             routes: [{ name: 'Pages' }],
+        });
+    }
+
+    const loginAdm = () => {
+        navigation.reset({ 
+            index: 0,
+            routes: [{ name: 'PagesAdm' }],
         });
     }
 

@@ -85,7 +85,7 @@ export default function Profile({navigation}) {
         backgroundColor: '#EBEAEF',
     },
     containerHeader: {
-        marginTop: '10%',
+        marginTop: '15%',
         height: 170,
         width: '80%',
         alignSelf: 'center',
