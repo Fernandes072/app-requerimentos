@@ -3,7 +3,8 @@ import {  Button, Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import api from '../src/Services/Api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../../src/Services/Api';
 
 export default function RequerimentsAdm({navigation}) {
 
@@ -26,6 +27,19 @@ export default function RequerimentsAdm({navigation}) {
         }
     }, [search]);
 
+    /*const goRequerimentInfo = () => {
+        navigation.reset({ 
+            index: 1,
+            routes: [{ name: 'RequerimentsAdm' },
+                    { name: 'RequerimentsInfoAdm' }
+            ],
+        });
+    }*/
+
+    const goRequerimentInfo = () => {
+        navigation.navigate('RequerimentInfoAdm');
+    }
+
     async function getRequeriments(){
         try {
             const response = await api.get(`/requeriments`);
@@ -45,10 +59,12 @@ export default function RequerimentsAdm({navigation}) {
         }
     }
 
-    async function moreOptions (requerimentId) {
+    async function showRequeriment (requerimentId) {
         try {
             const response = await api.get(`/requeriments/${requerimentId}`);
-            console.log(response.data);
+            await AsyncStorage.setItem('requeriment', JSON.stringify(response.data));
+            console.log(JSON.parse(await AsyncStorage.getItem('requeriment')));
+            goRequerimentInfo();
         } catch (error) {
             console.log("Erro ao buscar requerimento!");
         }
@@ -72,12 +88,12 @@ export default function RequerimentsAdm({navigation}) {
                 {requeriments.map((requeriment) => (
                     <View key={requeriment.requerimentId} style={styles.containerRequeriment}>
 
-                        <TouchableOpacity onPress={() => moreOptions(requeriment.requerimentId)} style={styles.more}>
+                        <TouchableOpacity onPress={() => showRequeriment(requeriment.requerimentId)} style={styles.more}>
                             <View style={styles.containerRequerimentInfo}>
-                                <Text style={styles.requerimentInfo}> N° {requeriment.requerimentId}</Text>
-                                <Text style={styles.requerimentInfo}> Matrícula: {requeriment.registration.registration}</Text>
-                                <Text style={styles.requerimentInfo}> Tipo: {requeriment.type}</Text>
-                                <Text style={styles.requerimentInfo}> Data de envio: {requeriment.sendDate.split(' ')[0]}</Text>
+                                <Text style={styles.requerimentInfo}> <Text style={styles.titleInfo}>N° </Text>{requeriment.requerimentId}</Text>
+                                <Text style={styles.requerimentInfo}> <Text style={styles.titleInfo}>Matrícula: </Text>{requeriment.registration.registration}</Text>
+                                <Text style={styles.requerimentInfo}> <Text style={styles.titleInfo}>Tipo: </Text>{requeriment.type}</Text>
+                                <Text style={styles.requerimentInfo}> <Text style={styles.titleInfo}>Data de envio: </Text>{requeriment.sendDate.split(' ')[0]}</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -145,5 +161,8 @@ export default function RequerimentsAdm({navigation}) {
         fontSize: 16,
         marginLeft: '2%',
         marginTop: '1%',
+    },
+    titleInfo: {
+        fontWeight: 'bold',
     },
 });

@@ -3,7 +3,7 @@ import {  Button, Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import api from '../src/Services/Api';
+import api from '../../src/Services/Api';
 
 export default function UsersAdm({navigation}) {
 
@@ -74,9 +74,9 @@ export default function UsersAdm({navigation}) {
 
                         <TouchableOpacity onPress={() => moreOptions(user.registration)} style={styles.more}>
                             <View style={styles.containerUserInfo}>
-                                <Text style={styles.userInfo}> Matrícula: {user.registration} </Text>
-                                <Text style={styles.userInfo}> Nome: {user.name.split(' ')[0]} {user.name.split(' ')[1]}</Text>
-                                <Text style={styles.userInfo}> Curso: {user.courseId.name}</Text>
+                                <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Matrícula: </Text>{user.registration} </Text>
+                                <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Nome: </Text>{user.name.split(' ')[0]} {user.name.split(' ')[1]}</Text>
+                                <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Curso: </Text>{user.courseId.name}</Text>
                             </View>
                         </TouchableOpacity> 
                     </View>
@@ -143,5 +143,8 @@ export default function UsersAdm({navigation}) {
         fontSize: 16,
         marginLeft: '2%',
         marginTop: '1%',
+    },
+    titleInfo: {
+        fontWeight: 'bold',
     },
 });

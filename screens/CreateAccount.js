@@ -261,12 +261,13 @@ const styles = StyleSheet.create({
         top: 0,
         zIndex: 1,
         width: '100%',
-        height: 70,
-        backgroundColor: '#EBEAEF',
+        height: 82,
     },
     arrowBack: {
         marginLeft: '5%',
         marginTop: '10%',
+        width: 50,
+        height: 50,
     },
     logo: {
         width: 300,

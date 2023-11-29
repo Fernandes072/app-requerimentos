@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import UsersAdm from './UsersAdm';
-import Profile from './Profile';
+import Profile from '../Profile';
 import RequerimentsAdm from './RequerimentsAdm';
 
 

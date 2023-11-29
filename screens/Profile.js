@@ -58,7 +58,7 @@ export default function Profile({navigation}) {
                         <Text style={styles.optionText}>Meus requerimentos</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.optionButton}  onPress={() => deleteSave()}>
-                    <MaterialCommunityIcons name="logout" size={28} style={styles.icon}/>
+                        <MaterialCommunityIcons name="logout" size={28} style={styles.icon}/>
                         <Text style={styles.optionText}>Sair</Text>
                     </TouchableOpacity>
                 </View>

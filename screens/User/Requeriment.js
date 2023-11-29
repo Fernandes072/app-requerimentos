@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../src/Services/Api';
+import api from '../../src/Services/Api';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function UsersAdm({navigation}) {
@@ -110,7 +110,7 @@ export default function UsersAdm({navigation}) {
 
                 <View style={styles.containerHeader}>
                     <Image 
-                        source={require('../assets/logo.png')}
+                        source={require('../../assets/logo.png')}
                         style={ styles.logo }
                     />
                 </View>
