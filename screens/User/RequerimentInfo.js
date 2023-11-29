@@ -27,16 +27,6 @@ export default function RequerimentsInfoAdm({navigation}) {
             console.log("Erro ao carregar requerimento!");
         }
     }
-
-    async function deleteRequeriment(){
-        try {
-            await api.delete(`/requeriments/${requeriment.requerimentId}`);
-            await AsyncStorage.removeItem('infoRequeriment');
-            back();
-        } catch (error) {
-            console.log("Erro ao apagar requerimento!");
-        }
-    }
   
     return (
         <View style={styles.container}>
@@ -70,10 +60,6 @@ export default function RequerimentsInfoAdm({navigation}) {
                         <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Motivos: </Text>{requeriment && requeriment.reason}</Text>
 
                     </View>
-
-                    <TouchableOpacity style={styles.optionButton}  onPress={() => deleteRequeriment()}>
-                        <Text style={styles.optionText}>Excluir Requerimento</Text>
-                    </TouchableOpacity>
 
                 </View>
             </ScrollView>

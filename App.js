@@ -7,13 +7,14 @@ import CreateAccount from './screens/CreateAccount';
 import RequerimentInfoAdm from './screens/Adm/RequerimentInfoAdm';
 import UserInfoAdm from './screens/Adm/UserInfoAdm';
 import UserRequerimentsAdm from './screens/Adm/UserRequerimentsAdm';
+import MyRequeriments from './screens/User/MyRequeriments';
+import RequerimentInfo from './screens/User/RequerimentInfo';
 
 const Stack = createStackNavigator();
 
 function MyStack() { 
   return (
-    <Stack.Navigator
-    screenOptions={{headerShown:false}}>
+    <Stack.Navigator screenOptions={{headerShown:false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Pages" component={Pages} />
       <Stack.Screen name="CreateAccount" component={CreateAccount} />
@@ -21,6 +22,8 @@ function MyStack() {
       <Stack.Screen name="RequerimentInfoAdm" component={RequerimentInfoAdm} />
       <Stack.Screen name="UserInfoAdm" component={UserInfoAdm} />
       <Stack.Screen name="UserRequerimentsAdm" component={UserRequerimentsAdm} />
+      <Stack.Screen name="MyRequeriments" component={MyRequeriments} />
+      <Stack.Screen name="RequerimentInfo" component={RequerimentInfo} />
     </Stack.Navigator>
   );
 }

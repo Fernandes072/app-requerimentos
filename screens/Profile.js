@@ -36,6 +36,10 @@ export default function Profile({navigation}) {
           routes: [{ name: 'Login' }],
       });
     }
+
+    const goMyRequeriments = () => {
+        navigation.navigate('MyRequeriments');
+    }
   
     return (
         <View style={styles.container}>
@@ -54,7 +58,7 @@ export default function Profile({navigation}) {
                 </View>
 
                 <View style={styles.containerOptions}>
-                    <TouchableOpacity style={styles.optionButton}  onPress={() => console.log("meus requerimentos")}>
+                    <TouchableOpacity style={styles.optionButton}  onPress={() => goMyRequeriments()}>
                         <Text style={styles.optionText}>Meus requerimentos</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.optionButton}  onPress={() => deleteSave()}>
