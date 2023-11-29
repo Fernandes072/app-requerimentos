@@ -7,12 +7,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
-export default function RequerimentsAdm({navigation}) {
+export default function UserInfoAdm({navigation}) {
 
-    const [requeriment, setRequeriment] = useState();
+    const [user, setUser] = useState();
 
     useEffect(() => {
-        getRequeriment();
+        getUser();
     }, []);
 
     const back = () => {
@@ -20,21 +20,25 @@ export default function RequerimentsAdm({navigation}) {
         navigation.pop();
     }
 
-    async function getRequeriment(){
+    const goRequeriments = () => {
+        navigation.navigate('UserRequerimentsAdm');
+    }
+
+    async function getUser(){
         try {
-            setRequeriment(JSON.parse(await AsyncStorage.getItem('infoRequeriment')));
+            setUser(JSON.parse(await AsyncStorage.getItem('infoUser')));
         } catch (error) {
-            console.log("Erro ao carregar requerimento!");
+            console.log("Erro ao carregar usuário!");
         }
     }
 
-    async function deleteRequeriment(){
+    async function deleteUser(){
         try {
-            await api.delete(`/requeriments/${requeriment.requerimentId}`);
-            await AsyncStorage.removeItem('infoRequeriment');
+            await api.delete(`/users/${user.registration}`);
+            await AsyncStorage.removeItem('infoUser');
             back();
         } catch (error) {
-            console.log("Erro ao apagar requerimento!");
+            console.log("Erro ao apagar usuário!");
         }
     }
   
@@ -53,29 +57,27 @@ export default function RequerimentsAdm({navigation}) {
                         source={require('../../assets/logo.png')}
                         style={ styles.logo }
                     />
-                    <Text style={styles.title}>Requerimento N° {requeriment && requeriment.requerimentId}</Text>
+                    <Text style={styles.title}>{user && user.registration}</Text>
                 </View>
 
-                <View style={styles.containerRequeriment}>
+                <View style={styles.containerUser}>
 
-                    <View style={styles.containerRequerimentInfo}>
-
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Matrícula: </Text>{requeriment && requeriment.registration.registration}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Nome: </Text>{requeriment && requeriment.registration.name}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Email: </Text>{requeriment && requeriment.registration.email}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Curso: </Text>{requeriment && requeriment.registration.courseId.name}</Text>
-                        <Text></Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Tipo: </Text>{requeriment && requeriment.type}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Justificativa: </Text>{requeriment && requeriment.specification}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Motivos: </Text>{requeriment && requeriment.reason}</Text>
-
+                    <View style={styles.containerUserInfo}>
+                        <Text style={styles.userInfo}><Text style={styles.titleInfo}>Nome: </Text>{user && user.name}</Text>
+                        <Text style={styles.userInfo}><Text style={styles.titleInfo}>Email: </Text>{user && user.email}</Text>
+                        <Text style={styles.userInfo}><Text style={styles.titleInfo}>Curso: </Text>{user && user.courseId.name}</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.optionButton}  onPress={() => deleteRequeriment()}>
-                        <Text style={styles.optionText}>Excluir Requerimento</Text>
+                    <TouchableOpacity style={styles.optionButton}  onPress={() => goRequeriments()}>
+                        <Text style={styles.optionText}>Requerimentos</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.optionButton}  onPress={() => deleteUser()}>
+                        <Text style={styles.optionText}>Excluir Usuário</Text>
                     </TouchableOpacity>
 
                 </View>
+
             </ScrollView>
         </View>
     );
@@ -119,18 +121,19 @@ export default function RequerimentsAdm({navigation}) {
         alignSelf: 'center',
         marginTop: '2%',
     },
-    containerRequeriment: {
+    containerUser: {
         flex: 1,
         width: '100%',
         marginBottom: '5%',
         paddingStart: '10%',
         paddingEnd: '5%',
     },
-    containerRequerimentInfo: {
+    containerUserInfo: {
         width: '100%',
         marginTop: '3%',
+        marginBottom: '5%',
     },
-    requerimentInfo: {
+    userInfo: {
         fontSize: 16,
         marginTop: '1%',
     },
@@ -146,7 +149,7 @@ export default function RequerimentsAdm({navigation}) {
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
-        marginTop: '10%'
+        marginTop: '5%'
     },
     optionText: {
         color: '#000000',

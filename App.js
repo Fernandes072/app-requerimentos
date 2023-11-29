@@ -5,6 +5,8 @@ import PagesAdm from './screens/Adm/PagesAdm';
 import Pages from './screens/User/Pages';
 import CreateAccount from './screens/CreateAccount';
 import RequerimentInfoAdm from './screens/Adm/RequerimentInfoAdm';
+import UserInfoAdm from './screens/Adm/UserInfoAdm';
+import UserRequerimentsAdm from './screens/Adm/UserRequerimentsAdm';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +19,8 @@ function MyStack() {
       <Stack.Screen name="CreateAccount" component={CreateAccount} />
       <Stack.Screen name="PagesAdm" component={PagesAdm} />
       <Stack.Screen name="RequerimentInfoAdm" component={RequerimentInfoAdm} />
+      <Stack.Screen name="UserInfoAdm" component={UserInfoAdm} />
+      <Stack.Screen name="UserRequerimentsAdm" component={UserRequerimentsAdm} />
     </Stack.Navigator>
   );
 }

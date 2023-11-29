@@ -1,16 +1,19 @@
-import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import {  Button, Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
-export default function RequerimentsAdm({navigation}) {
+export default function UserRequerimentsAdm({navigation}) {
 
     const [requeriments, setRequeriments] = useState([]);
 
-    const [search, setSearch] = useState(null);
+    useEffect(() => {
+        getRequeriments();
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -19,35 +22,23 @@ export default function RequerimentsAdm({navigation}) {
         }, [])
     );
 
-    useEffect(() => {
-        if (search != '' && search != null) {
-            searchRequeriments();
-        } else{
-            getRequeriments();
-        }
-    }, [search]);
-
-    const goRequerimentInfo = () => {
-        navigation.navigate('RequerimentInfoAdm');
+    const back = () => {
+        console.log("back");
+        navigation.pop();
     }
 
     async function getRequeriments(){
         try {
-            const response = await api.get(`/requeriments`);
+            const user = JSON.parse(await AsyncStorage.getItem('infoUser'));
+            const response = await api.get(`/users/${user.registration}/requeriments`);
             setRequeriments(response.data);
         } catch (error) {
             console.log("Erro ao buscar requerimentos!");
         }
     }
 
-    async function searchRequeriments(){
-        try {
-            const response = await api.get(`/requeriments/search/${search}`);
-            console.log(response.data);
-            setRequeriments(response.data);
-        } catch (error) {
-            console.log("Erro ao buscar pesquisa!");
-        }
+    const goRequerimentInfo = () => {
+        navigation.navigate('RequerimentInfoAdm');
     }
 
     async function showRequeriment (requerimentId) {
@@ -63,18 +54,21 @@ export default function RequerimentsAdm({navigation}) {
   
     return (
       <View style={styles.container}>
-        
-        <View style={styles.containerHeader}>
 
-            <View style={styles.containerSearch}>
-                <TextInput style={styles.input} 
-                    onChangeText={value => setSearch(value)} placeholder="  Matrícula / Número do requerimento"
+        <View style={styles.topBar}></View>
+
+        <ScrollView>
+        
+            <View style={styles.containerHeader}>
+                <TouchableOpacity onPress={() => back()} style={styles.arrowBack}>
+                    <MaterialCommunityIcons name="arrow-left" size={30} />
+                </TouchableOpacity>
+                <Image 
+                    source={require('../../assets/logo.png')}
+                    style={ styles.logo }
                 />
             </View>
 
-        </View>
-
-        <ScrollView>
             <View style={styles.containerRequeriments}>
                 {requeriments.map((requeriment) => (
                     <View key={requeriment.requerimentId} style={styles.containerRequeriment}>
@@ -91,6 +85,7 @@ export default function RequerimentsAdm({navigation}) {
                     </View>
                 ))}
             </View>
+
         </ScrollView>
       </View>
     );
@@ -101,35 +96,38 @@ export default function RequerimentsAdm({navigation}) {
         flex: 1,
         backgroundColor: '#EBEAEF'
     },
+    topBar: {
+        position: 'absolute',
+        top: 0,
+        zIndex: 1,
+        width: '100%',
+        height: 25,
+        backgroundColor: '#EBEAEF',
+    },
+    arrowBack: {
+        width: 50,
+        height: 50,
+        marginTop: '-7%',
+    },
     containerHeader: {
-        marginTop: '6%',
-        height: 70,
+        marginTop: '16%',
+        height: 150,
         paddingStart: '5%',
         paddingEnd: '5%',
-
     },
-    containerSearch: {
-        marginTop: '7%',
-        height: 40,
-    },
-    input: {
-        borderBottomColor: '#457918',
-        borderTopColor: '#457918',
-        borderLeftColor: '#457918',
-        borderRightColor: '#457918',
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
-        borderRadius: 10,
-        height: 40,
-        fontSize: 16,
+    logo: {
+        width: 300,
+        height: 150,
+        marginTop: '-7%',
+        resizeMode: 'contain',
+        alignSelf: 'center'
     },
     containerRequeriments: {
         flex: 1,
-        marginTop: '3%',
         paddingStart: '5%',
         paddingEnd: '5%',
+        marginTop: '5%',
+        marginBottom: '3%',
     },
     containerRequeriment: {
         width: '100%',

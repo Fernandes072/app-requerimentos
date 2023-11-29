@@ -3,6 +3,7 @@ import {  Button, Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../src/Services/Api';
 
 export default function UsersAdm({navigation}) {
@@ -26,6 +27,10 @@ export default function UsersAdm({navigation}) {
         }
     }, [search]);
 
+    const goUserInfo = () => {
+        navigation.navigate('UserInfoAdm');
+    }
+
     async function getUsers(){
         try {
             const response = await api.get(`/users`);
@@ -45,10 +50,12 @@ export default function UsersAdm({navigation}) {
         }
     }
 
-    async function moreOptions (registration) {
+    async function showUser (registration) {
         try {
             const response = await api.get(`/users/${registration}`);
-            console.log(response.data);
+            await AsyncStorage.setItem('infoUser', JSON.stringify(response.data));
+            console.log(JSON.parse(await AsyncStorage.getItem('infoUser')));
+            goUserInfo();
         } catch (error) {
             console.log("Erro ao buscar usuário!");
         }
@@ -72,7 +79,7 @@ export default function UsersAdm({navigation}) {
                 {users.map((user) => (
                     <View key={user.registration} style={styles.containerUser}>
 
-                        <TouchableOpacity onPress={() => moreOptions(user.registration)} style={styles.more}>
+                        <TouchableOpacity onPress={() => showUser(user.registration)} style={styles.more}>
                             <View style={styles.containerUserInfo}>
                                 <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Matrícula: </Text>{user.registration} </Text>
                                 <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Nome: </Text>{user.name.split(' ')[0]} {user.name.split(' ')[1]}</Text>
