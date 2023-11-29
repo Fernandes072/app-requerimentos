@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import UsersAdm from './UsersAdm';
 import Profile from './Profile';
+import RequerimentsAdm from './RequerimentsAdm';
 
 
 const Tab = createBottomTabNavigator();
@@ -25,6 +26,16 @@ export default function PagesAdm() {
         component={UsersAdm}
         options={{
           tabBarLabel: 'Usuários',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-supervisor" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="RequerimentsAdm"
+        component={RequerimentsAdm}
+        options={{
+          tabBarLabel: 'Requerimentos',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-supervisor" color={color} size={size} />
           ),
