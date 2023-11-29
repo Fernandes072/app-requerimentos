@@ -15,7 +15,6 @@ export default function Profile({navigation}) {
 
     async function getUser(){
         try {
-            //setUser(JSON.parse(await AsyncStorage.getItem('user')))
             setUser(JSON.parse(await AsyncStorage.getItem('user')));
         } catch (error) {
             console.log("Erro ao buscar usuário!");

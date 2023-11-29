@@ -1,17 +1,20 @@
-import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Image } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Image, Alert } from 'react-native';
 import {  Button, Text } from 'react-native-elements';
 import React, {useState, useEffect, useRef} from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../src/Services/Api';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function UsersAdm({navigation}) {
 
     const [type, setType] = useState(null);
     const [specification, setSpecification] = useState(null);
     const [reason, setReason] = useState(null);
+    const [user, setUser] = useState(null);
 
     const [errorType, setErrorType] = useState(null);
     const [errorSpecification, setErrorSpecification] = useState(null);
@@ -20,6 +23,18 @@ export default function UsersAdm({navigation}) {
     const [isSpecificationSubmitted, setIsSpecificationSubmitted] = useState(false);
 
     const reasonRef = useRef(null);
+
+    async function getUser(){
+        try {
+            setUser(JSON.parse(await AsyncStorage.getItem('user')));
+        } catch (error) {
+            console.log("Erro ao buscar usuário!");
+        }
+    }
+
+    useEffect(() => {
+        getUser();
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -63,11 +78,25 @@ export default function UsersAdm({navigation}) {
         );
     }
 
-    const sendRequeriment =  () => {
+    async function sendRequeriment() {
         if (isValid()) {
-            console.log("Requerimento enviado!");
-        } else {
-            console.log("Requerimento não enviado!");
+            console.log(user);
+            try {
+                await api.post('/requeriments', {
+                    type: type,
+                    specification: specification,
+                    reason: reason,
+                    registration: user,
+                    sendDate: new Date().toLocaleString('pt-BR', {timeZone: 'America/Argentina/Buenos_Aires'})
+                });
+                setType(null);
+                setSpecification(null);
+                setReason(null);
+                Alert.alert("Aviso","Requerimento enviado com sucesso!");
+            } catch (error) {
+                Alert.alert("Aviso","Erro ao enviar o requerimento!");
+                console.log("Erro ao enviar o requerimento!");
+            }
         }
     }
 
