@@ -68,16 +68,19 @@ export default function RequerimentsAdm({navigation}) {
         </View>
 
         <ScrollView>
-            <View style={styles.containerUsers}>
+            <View style={styles.containerRequeriments}>
                 {requeriments.map((requeriment) => (
-                    <View key={requeriment.requerimentId} style={styles.containerUser}>
+                    <View key={requeriment.requerimentId} style={styles.containerRequeriment}>
 
                         <TouchableOpacity onPress={() => moreOptions(requeriment.requerimentId)} style={styles.more}>
-                            <View style={styles.containerUserInfo}>
-                                <Text style={styles.userInfo}> {requeriment.requerimentId} - {requeriment.registration.registration}</Text>
-                                <Text style={styles.userInfo}> {requeriment.type}</Text>
+                            <View style={styles.containerRequerimentInfo}>
+                                <Text style={styles.requerimentInfo}> N° {requeriment.requerimentId}</Text>
+                                <Text style={styles.requerimentInfo}> Matrícula: {requeriment.registration.registration}</Text>
+                                <Text style={styles.requerimentInfo}> Tipo: {requeriment.type}</Text>
+                                <Text style={styles.requerimentInfo}> Data de envio: {requeriment.sendDate.split(' ')[0]}</Text>
                             </View>
                         </TouchableOpacity>
+
                     </View>
                 ))}
             </View>
@@ -115,32 +118,32 @@ export default function RequerimentsAdm({navigation}) {
         height: 40,
         fontSize: 16,
     },
-    containerUsers: {
+    containerRequeriments: {
         flex: 1,
         marginTop: '3%',
         paddingStart: '5%',
         paddingEnd: '5%',
     },
-    containerUser: {
+    containerRequeriment: {
         width: '100%',
-        height: 80,
+        height: 110,
         backgroundColor: '#A2E700',
         marginBottom: '5%',
         borderRadius: 10,
     },
     more: {
         width: '100%',
-        height: 80,
+        height: '100%',
         borderRadius: 10,
     },
-    containerUserInfo: {
-        width: '85%',
-        marginTop: '-6.5%',
-        height: 50,
-        marginLeft: '2%',
-        marginTop: '4%'
+    containerRequerimentInfo: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10, 
     },
-    userInfo: {
+    requerimentInfo: {
         fontSize: 16,
+        marginLeft: '2%',
+        marginTop: '1%',
     },
 });

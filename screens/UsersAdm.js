@@ -73,13 +73,12 @@ export default function UsersAdm({navigation}) {
                     <View key={user.registration} style={styles.containerUser}>
 
                         <TouchableOpacity onPress={() => moreOptions(user.registration)} style={styles.more}>
-                            <Feather name="more-vertical" size={24} color="black" />
-                        </TouchableOpacity>
-
-                        <View style={styles.containerUserInfo}>
-                            <Text style={styles.userInfo}> {user.registration} - {user.name.split(' ')[0]} {user.name.split(' ')[1]}</Text>
-                            <Text style={styles.userInfo}> {user.courseId.name}</Text>
-                        </View> 
+                            <View style={styles.containerUserInfo}>
+                                <Text style={styles.userInfo}> Matrícula: {user.registration} </Text>
+                                <Text style={styles.userInfo}> Nome: {user.name.split(' ')[0]} {user.name.split(' ')[1]}</Text>
+                                <Text style={styles.userInfo}> Curso: {user.courseId.name}</Text>
+                            </View>
+                        </TouchableOpacity> 
                     </View>
                 ))}
             </View>
@@ -125,23 +124,24 @@ export default function UsersAdm({navigation}) {
     },
     containerUser: {
         width: '100%',
-        height: 80,
+        height: 85,
         backgroundColor: '#A2E700',
         marginBottom: '5%',
         borderRadius: 10,
     },
     more: {
-        alignSelf: 'flex-end',
-        marginTop: '3.5%',
-        marginRight: '3%'
+        width: '100%',
+        height: '100%',
+        borderRadius: 10,
     },
     containerUserInfo: {
-        width: '85%',
-        marginTop: '-6.5%',
-        height: 50,
-        marginLeft: '2%',
+        width: '100%',
+        height: '100%',
+        borderRadius: 10,
     },
     userInfo: {
         fontSize: 16,
+        marginLeft: '2%',
+        marginTop: '1%',
     },
 });
