@@ -1,7 +1,6 @@
 import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import {  Button, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
-import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../src/Services/Api';
@@ -43,7 +42,6 @@ export default function UsersAdm({navigation}) {
     async function searchUsers(){
         try {
             const response = await api.get(`/users/search/${search}`);
-            console.log(response.data);
             setUsers(response.data);
         } catch (error) {
             console.log("Erro ao buscar pesquisa!");
@@ -54,7 +52,6 @@ export default function UsersAdm({navigation}) {
         try {
             const response = await api.get(`/users/${registration}`);
             await AsyncStorage.setItem('infoUser', JSON.stringify(response.data));
-            console.log(JSON.parse(await AsyncStorage.getItem('infoUser')));
             goUserInfo();
         } catch (error) {
             console.log("Erro ao buscar usuário!");
@@ -82,8 +79,8 @@ export default function UsersAdm({navigation}) {
                         <TouchableOpacity onPress={() => showUser(user.registration)} style={styles.more}>
                             <View style={styles.containerUserInfo}>
                                 <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Matrícula: </Text>{user.registration} </Text>
-                                <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Nome: </Text>{user.name.split(' ')[0]} {user.name.split(' ')[1]}</Text>
-                                <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Curso: </Text>{user.courseId.name}</Text>
+                                <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Nome: </Text>{user.firstName}</Text>
+                                <Text style={styles.userInfo}> <Text style={styles.titleInfo}>Curso: </Text>{user.course}</Text>
                             </View>
                         </TouchableOpacity> 
                     </View>

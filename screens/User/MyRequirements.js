@@ -1,52 +1,49 @@
-import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Image } from 'react-native';
-import {  Button, Text } from 'react-native-elements';
+import { ScrollView, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import {  Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
-import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
-export default function MyRequeriments({navigation}) {
+export default function MyRequirements({navigation}) {
 
-    const [requeriments, setRequeriments] = useState([]);
+    const [requirements, setRequirements] = useState([]);
 
     useEffect(() => {
-        getRequeriments();
+        getRequirements();
     }, []);
 
     useFocusEffect(
         React.useCallback(() => {
-            getRequeriments();
+            getRequirements();
             return () => {};
         }, [])
     );
 
     const back = () => {
-        console.log("back");
         navigation.pop();
     }
 
-    async function getRequeriments(){
+    async function getRequirements(){
         try {
             const user = JSON.parse(await AsyncStorage.getItem('user'));
-            const response = await api.get(`/users/${user.registration}/requeriments`);
-            setRequeriments(response.data);
+            const response = await api.get(`/users/${user.registration}/requirements`);
+            setRequirements(response.data);
         } catch (error) {
             console.log("Erro ao buscar requerimentos!");
         }
     }
 
-    const goRequerimentInfo = () => {
-        navigation.navigate('RequerimentInfo');
+    const goRequirementInfo = () => {
+        navigation.navigate('RequirementInfo');
     }
 
-    async function showRequeriment (requerimentId) {
+    async function showRequirement (requirementId) {
         try {
-            const response = await api.get(`/requeriments/${requerimentId}`);
-            await AsyncStorage.setItem('infoRequeriment', JSON.stringify(response.data));
-            console.log(JSON.parse(await AsyncStorage.getItem('infoRequeriment')));
-            goRequerimentInfo();
+            const response = await api.get(`/requirements/${requirementId}`);
+            await AsyncStorage.setItem('infoRequirement', JSON.stringify(response.data));
+            goRequirementInfo();
         } catch (error) {
             console.log("Erro ao buscar requerimento!");
         }
@@ -69,16 +66,16 @@ export default function MyRequeriments({navigation}) {
                 />
             </View>
 
-            <View style={styles.containerRequeriments}>
-                {requeriments.map((requeriment) => (
-                    <View key={requeriment.requerimentId} style={styles.containerRequeriment}>
+            <View style={styles.containerRequirements}>
+                {requirements.map((requirement) => (
+                    <View key={requirement.requirementId} style={styles.containerRequirement}>
 
-                        <TouchableOpacity onPress={() => showRequeriment(requeriment.requerimentId)} style={styles.more}>
-                            <View style={styles.containerRequerimentInfo}>
-                                <Text style={styles.requerimentInfo}> <Text style={styles.titleInfo}>N° </Text>{requeriment.requerimentId}</Text>
-                                <Text style={styles.requerimentInfo}> <Text style={styles.titleInfo}>Matrícula: </Text>{requeriment.registration.registration}</Text>
-                                <Text style={styles.requerimentInfo}> <Text style={styles.titleInfo}>Tipo: </Text>{requeriment.type}</Text>
-                                <Text style={styles.requerimentInfo}> <Text style={styles.titleInfo}>Data de envio: </Text>{requeriment.sendDate.split(' ')[0]}</Text>
+                        <TouchableOpacity onPress={() => showRequirement(requirement.requirementId)} style={styles.more}>
+                            <View style={styles.containerRequirementInfo}>
+                                <Text style={styles.requirementInfo}> <Text style={styles.titleInfo}>N° </Text>{requirement.requirementId}</Text>
+                                <Text style={styles.requirementInfo}> <Text style={styles.titleInfo}>Matrícula: </Text>{requirement.registration.registration}</Text>
+                                <Text style={styles.requirementInfo}> <Text style={styles.titleInfo}>Tipo: </Text>{requirement.type}</Text>
+                                <Text style={styles.requirementInfo}> <Text style={styles.titleInfo}>Data de envio: </Text>{requirement.sendDate.split(' ')[0]}</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -122,14 +119,14 @@ export default function MyRequeriments({navigation}) {
         resizeMode: 'contain',
         alignSelf: 'center'
     },
-    containerRequeriments: {
+    containerRequirements: {
         flex: 1,
         paddingStart: '5%',
         paddingEnd: '5%',
         marginTop: '5%',
         marginBottom: '3%',
     },
-    containerRequeriment: {
+    containerRequirement: {
         width: '100%',
         height: 110,
         backgroundColor: '#A2E700',
@@ -141,12 +138,12 @@ export default function MyRequeriments({navigation}) {
         height: '100%',
         borderRadius: 10,
     },
-    containerRequerimentInfo: {
+    containerRequirementInfo: {
         width: '100%',
         height: '100%',
         borderRadius: 10, 
     },
-    requerimentInfo: {
+    requirementInfo: {
         fontSize: 16,
         marginLeft: '2%',
         marginTop: '1%',

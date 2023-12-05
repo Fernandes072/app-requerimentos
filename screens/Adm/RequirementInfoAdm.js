@@ -1,37 +1,34 @@
-import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Image } from 'react-native';
-import {  Button, Text } from 'react-native-elements';
+import { ScrollView, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
-import { Feather } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
-export default function RequerimentsInfoAdm({navigation}) {
+export default function RequirementInfoAdm({navigation}) {
 
-    const [requeriment, setRequeriment] = useState();
+    const [requirement, setRequirement] = useState();
 
     useEffect(() => {
-        getRequeriment();
+        getRequirement();
     }, []);
 
     const back = () => {
-        console.log("back");
         navigation.pop();
     }
 
-    async function getRequeriment(){
+    async function getRequirement(){
         try {
-            setRequeriment(JSON.parse(await AsyncStorage.getItem('infoRequeriment')));
+            setRequirement(JSON.parse(await AsyncStorage.getItem('infoRequirement')));
         } catch (error) {
             console.log("Erro ao carregar requerimento!");
         }
     }
 
-    async function deleteRequeriment(){
+    async function deleteRequirement(){
         try {
-            await api.delete(`/requeriments/${requeriment.requerimentId}`);
-            await AsyncStorage.removeItem('infoRequeriment');
+            await api.delete(`/requirements/${requirement.requirementId}`);
+            await AsyncStorage.removeItem('infoRequirement');
             back();
         } catch (error) {
             console.log("Erro ao apagar requerimento!");
@@ -53,25 +50,26 @@ export default function RequerimentsInfoAdm({navigation}) {
                         source={require('../../assets/logo.png')}
                         style={ styles.logo }
                     />
-                    <Text style={styles.title}>Requerimento N° {requeriment && requeriment.requerimentId}</Text>
+                    <Text style={styles.title}>Requerimento N° {requirement && requirement.requirementId}</Text>
                 </View>
 
-                <View style={styles.containerRequeriment}>
+                <View style={styles.containerRequirement}>
 
-                    <View style={styles.containerRequerimentInfo}>
+                    <View style={styles.containerRequirementInfo}>
 
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Matrícula: </Text>{requeriment && requeriment.registration.registration}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Nome: </Text>{requeriment && requeriment.registration.name}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Email: </Text>{requeriment && requeriment.registration.email}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Curso: </Text>{requeriment && requeriment.registration.courseId.name}</Text>
+                        <Text style={styles.requirementInfo}><Text style={styles.titleInfo}>Matrícula: </Text>{requirement && requirement.registration.registration}</Text>
+                        <Text style={styles.requirementInfo}><Text style={styles.titleInfo}>Nome: </Text>{requirement && requirement.registration.firstName} {requirement && requirement.registration.lastName}</Text>
+                        <Text style={styles.requirementInfo}><Text style={styles.titleInfo}>Email: </Text>{requirement && requirement.registration.email}</Text>
+                        <Text style={styles.requirementInfo}><Text style={styles.titleInfo}>Telefone: </Text>{requirement && requirement.registration.phoneNumber}</Text>
+                        <Text style={styles.requirementInfo}><Text style={styles.titleInfo}>Curso: </Text>{requirement && requirement.registration.course}</Text>
                         <Text></Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Tipo: </Text>{requeriment && requeriment.type}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Justificativa: </Text>{requeriment && requeriment.specification}</Text>
-                        <Text style={styles.requerimentInfo}><Text style={styles.titleInfo}>Motivos: </Text>{requeriment && requeriment.reason}</Text>
+                        <Text style={styles.requirementInfo}><Text style={styles.titleInfo}>Tipo: </Text>{requirement && requirement.type}</Text>
+                        <Text style={styles.requirementInfo}><Text style={styles.titleInfo}>Justificativa: </Text>{requirement && requirement.specification}</Text>
+                        <Text style={styles.requirementInfo}><Text style={styles.titleInfo}>Motivos: </Text>{requirement && requirement.reason}</Text>
 
                     </View>
 
-                    <TouchableOpacity style={styles.optionButton}  onPress={() => deleteRequeriment()}>
+                    <TouchableOpacity style={styles.optionButton}  onPress={() => deleteRequirement()}>
                         <Text style={styles.optionText}>Excluir Requerimento</Text>
                     </TouchableOpacity>
 
@@ -119,18 +117,18 @@ export default function RequerimentsInfoAdm({navigation}) {
         alignSelf: 'center',
         marginTop: '2%',
     },
-    containerRequeriment: {
+    containerRequirement: {
         flex: 1,
         width: '100%',
         marginBottom: '5%',
         paddingStart: '10%',
         paddingEnd: '5%',
     },
-    containerRequerimentInfo: {
+    containerRequirementInfo: {
         width: '100%',
         marginTop: '3%',
     },
-    requerimentInfo: {
+    requirementInfo: {
         fontSize: 16,
         marginTop: '1%',
     },

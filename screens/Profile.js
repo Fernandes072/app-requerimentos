@@ -1,9 +1,8 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
-import {  Button, Text } from 'react-native-elements';
+import {  Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import api from '../src/Services/Api';
 
 export default function Profile({navigation}) {
 
@@ -37,8 +36,8 @@ export default function Profile({navigation}) {
       });
     }
 
-    const goMyRequeriments = () => {
-        navigation.navigate('MyRequeriments');
+    const goMyRequirements = () => {
+        navigation.navigate('MyRequirements');
     }
   
     return (
@@ -49,16 +48,16 @@ export default function Profile({navigation}) {
             <ScrollView>
 
                 <View style={styles.containerHeader}>
-                    <Image source={user && user.image != null ? require('../assets/userImage.png') : require('../assets/user.png')} style={styles.imageUser} />
+                    <Image source={user && user.image != null ? {uri:user.image} : require('../assets/user.png')} style={styles.imageUser} />
                     <TouchableOpacity onPress={() => console.log("Abc")} style={styles.icon}>
                         <MaterialCommunityIcons name="account-edit" size={28} />
                     </TouchableOpacity>  
-                    <Text h4> {user && user.name.split(' ')[0]} {user && user.name.split(' ')[1]} </Text>
+                    <Text h4> {user && user.firstName} </Text>
                     <Text h5> {user && user.registration} </Text>
                 </View>
 
                 <View style={styles.containerOptions}>
-                    <TouchableOpacity style={styles.optionButton}  onPress={() => goMyRequeriments()}>
+                    <TouchableOpacity style={styles.optionButton}  onPress={() => goMyRequirements()}>
                         <Text style={styles.optionText}>Meus requerimentos</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.optionButton}  onPress={() => deleteSave()}>

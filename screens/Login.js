@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Image, Alert, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../src/Services/Api';
@@ -16,7 +16,6 @@ export default function Login({navigation}) {
     const passwordRef = useRef(null);
 
     async function loginVerify(){
-        console.log(username, password);
         try {
             const response = await api.get(`/users/username/${username}`);
             if (response.data.password == password) {
@@ -43,7 +42,6 @@ export default function Login({navigation}) {
     async function loadSave(){
         try {
             const user = await AsyncStorage.getItem('user');
-            console.log(user);
             if (user != null) {
                 if (JSON.parse(user).administrator == 'yes') {
                     loginAdm();

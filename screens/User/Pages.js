@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Profile from '../Profile';
-import Requeriment from './Requeriment';
+import SendRequirement from './SendRequirement';
 
 
 const Tab = createBottomTabNavigator();
@@ -21,8 +19,8 @@ export default function Pages() {
       }}
     >
       <Tab.Screen
-        name="Requeriment"
-        component={Requeriment}
+        name="SendRequirement"
+        component={SendRequirement}
         options={{
           tabBarLabel: 'Requerimento',
           tabBarIcon: ({ color, size }) => (

@@ -2,12 +2,14 @@ import { useState, useRef } from 'react';
 import { StyleSheet, View, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../src/Services/Api';
 
 export default function CreateAccount({navigation}) {
 
-    const[name, setName] = useState(null);
+    const[firstName, setFirstName] = useState(null);
+    const[lastName, setLastName] = useState(null);
+    const[phoneNumber, setPhoneNumber] = useState(null);
     const[email, setEmail] = useState(null);
     const[registration, setRegistration] = useState(null);
     const[course, setCourse] = useState(null);
@@ -15,7 +17,9 @@ export default function CreateAccount({navigation}) {
     const[password, setPassword] = useState(null);
     const[confirmPassword, setConfirmPassword] = useState(null);
 
-    const [errorName, setErrorName] = useState(null);
+    const [errorFirstName, setErrorFirstName] = useState(null);
+    const [errorLastName, setErrorLastName] = useState(null);
+    const [errorPhoneNumber, setErrorPhoneNumber] = useState(null);
     const [errorEmail, setErrorEmail] = useState(null);
     const [errorRegistration, setErrorRegistration] = useState(null);
     const [errorCourse, setErrorCourse] = useState(null);
@@ -23,11 +27,15 @@ export default function CreateAccount({navigation}) {
     const [errorPassword, setErrorPassword] = useState(null);
     const [errorConfirmPassword, setErrorConfirmPassword] = useState(null);
 
-    const [isNameSubmitted, setIsNameSubmitted] = useState(false);
+    const [isFirstNameSubmitted, setIsFirstNameSubmitted] = useState(false);
+    const [isLastNameSubmitted, setIsLastNameSubmitted] = useState(false);
+    const [isPhoneNumberSubmitted, setIsPhoneNumberSubmitted] = useState(false);
     const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
     const [isRegistrationSubmitted, setIsRegistrationSubmitted] = useState(false);
     const [isUsernameSubmitted, setIsUsernameSubmitted] = useState(false);
 
+    const lastNameRef = useRef(null);
+    const phoneNumberRef = useRef(null);
     const emailRef = useRef(null);
     const registrationRef = useRef(null);
     const usernameRef = useRef(null);
@@ -35,14 +43,28 @@ export default function CreateAccount({navigation}) {
     const confirmPasswordRef = useRef(null);
 
     const isValid = async () => {
-        console.log(name, email, registration, course, username, password, confirmPassword);
         let error = false;
 
-        if (name == null || name.split(' ').length < 2) {
-            setErrorName("Nome inválido!");
+        if (firstName == null || firstName.split(' ').length < 1) {
+            setErrorFirstName("Nome inválido!");
             error = true;
         } else {
-            setErrorName(null);
+            setErrorFirstName(null);
+        }
+
+        if (lastName == null || lastName.split(' ').length < 1) {
+            setErrorLastName("Sobrenome inválido!");
+            error = true;
+        } else {
+            setErrorLastName(null);
+        }
+
+        const phoneNumberRegex = /^\d{2}\d{5}\d{4}$/;
+        if (phoneNumber == null || !phoneNumberRegex.test(phoneNumber) || (await phoneNumberVerify())) {
+            setErrorPhoneNumber("Número inválido!");
+            error = true;
+        } else {
+            setErrorPhoneNumber(null);
         }
 
         const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
@@ -101,6 +123,16 @@ export default function CreateAccount({navigation}) {
         return findedEmail;
     }
 
+    async function phoneNumberVerify(){
+        let findedPhoneNumber = false;
+        try{
+            await api.get(`/users/phoneNumber/${phoneNumber}`);
+            findedPhoneNumber = true;
+        } catch (error) {
+        }
+        return findedPhoneNumber;
+    }
+
     async function registrationVerify(){
         let findedRegistration = false;
         try {
@@ -125,7 +157,9 @@ export default function CreateAccount({navigation}) {
         if ((await isValid())) {
             try {
                 await api.post('/users', {
-                    name: name,
+                    firstName: firstName,
+                    lastName: lastName,
+                    phoneNumber: phoneNumber,
                     email: email,
                     registration: registration,
                     username: username,
@@ -150,13 +184,15 @@ export default function CreateAccount({navigation}) {
     return (
         <View style={styles.container}>
 
+            <View style={styles.topBar}></View>
+            <ScrollView>
+
             <View style={styles.containerArrowBack}>
                 <TouchableOpacity onPress={() => back()} style={styles.arrowBack}>
-                    <Ionicons name="arrow-back" size={30} color="black" />
+                    <MaterialCommunityIcons name="arrow-left" size={30} />
                 </TouchableOpacity>
             </View>
 
-            <ScrollView>
 
                 <View style={styles.containerHeader}>
                     <Image 
@@ -170,12 +206,28 @@ export default function CreateAccount({navigation}) {
                 <View style={styles.containerForm}>
 
                     <TextInput style={styles.input} 
-                        onChangeText={value => {setName(value); setIsNameSubmitted(false)}} placeholder="Nome" returnKeyType="next" 
-                        onSubmitEditing={() => {emailRef.current.focus(); setIsNameSubmitted(true)}} 
-                        onBlur={() => {setIsNameSubmitted(true)}}
-                        value = {isNameSubmitted ? (name != null ? name.trim() : name) : name}
+                        onChangeText={value => {setFirstName(value); setIsFirstNameSubmitted(false)}} placeholder="Nome" returnKeyType="next" 
+                        onSubmitEditing={() => {lastNameRef.current.focus(); setIsFirstNameSubmitted(true)}} 
+                        onBlur={() => {setIsFirstNameSubmitted(true)}}
+                        value = {isFirstNameSubmitted ? (firstName != null ? firstName.trim() : firstName) : firstName}
                     />
-                    {errorName ? <Text style={styles.errorMessage}>{errorName}</Text> : null}
+                    {errorFirstName ? <Text style={styles.errorMessage}>{errorFirstName}</Text> : null}
+
+                    <TextInput style={styles.input} 
+                        onChangeText={value => {setLastName(value); setIsLastNameSubmitted(false)}} placeholder="Sobrenome" returnKeyType="next" 
+                        onSubmitEditing={() => {phoneNumberRef.current.focus(); setIsLastNameSubmitted(true)}}  ref={lastNameRef}
+                        onBlur={() => {setIsLastNameSubmitted(true)}}
+                        value = {isLastNameSubmitted ? (lastName != null ? lastName.trim() : lastName) : lastName}
+                    />
+                    {errorLastName ? <Text style={styles.errorMessage}>{errorLastName}</Text> : null}
+
+                    <TextInput style={styles.input} 
+                        onChangeText={value => {setPhoneNumber(value); setIsPhoneNumberSubmitted(false)}} placeholder="Telefone" returnKeyType="next" 
+                        onSubmitEditing={() => {emailRef.current.focus(); setIsPhoneNumberSubmitted(true)}} ref={phoneNumberRef} keyboardType='numeric'
+                        onBlur={() => {setIsPhoneNumberSubmitted(true)}}
+                        value = {isPhoneNumberSubmitted ? (phoneNumber != null ? phoneNumber.trim() : phoneNumber) : phoneNumber}
+                    />
+                    {errorPhoneNumber ? <Text style={styles.errorMessage}>{errorPhoneNumber}</Text> : null}
 
                     <TextInput style={styles.input} 
                         onChangeText={value => {setEmail(value); setIsEmailSubmitted(false)}} placeholder="Email" returnKeyType="next" 
@@ -200,10 +252,10 @@ export default function CreateAccount({navigation}) {
                             style={styles.picker}
                         >
                         <Picker.Item label="Selecione um curso" value="" />
-                        <Picker.Item label="Ciência da Computação" value="1" />
-                        <Picker.Item label="Logística" value="2" />
-                        <Picker.Item label="Manutenção e Suporte em Informática" value="3" />
-                        <Picker.Item label="Agronegócio" value="4" />
+                        <Picker.Item label="Ciência da Computação" value="Ciência da Computação" />
+                        <Picker.Item label="Logística" value="Logística" />
+                        <Picker.Item label="Manutenção e Suporte em Informática" value="Manutenção e Suporte em Informática" />
+                        <Picker.Item label="Agronegócio" value="Agronegócio" />
                         </Picker>
                     </View>
                     {errorCourse ? <Text style={styles.errorMessage}>{errorCourse}</Text> : null}
@@ -239,6 +291,7 @@ export default function CreateAccount({navigation}) {
                         </TouchableOpacity>
                     </View>
                 </View>
+
             </ScrollView>    
         </View>
     );
@@ -248,6 +301,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#EBEAEF'
+    },
+    topBar: {
+        position: 'absolute',
+        top: 0,
+        zIndex: 1,
+        width: '100%',
+        height: 25,
+        backgroundColor: '#EBEAEF',
     },
     containerHeader: {
         marginTop: '18%',

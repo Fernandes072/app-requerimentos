@@ -4,11 +4,11 @@ import Login from './screens/Login';
 import PagesAdm from './screens/Adm/PagesAdm';
 import Pages from './screens/User/Pages';
 import CreateAccount from './screens/CreateAccount';
-import RequerimentInfoAdm from './screens/Adm/RequerimentInfoAdm';
+import RequirementInfoAdm from './screens/Adm/RequirementInfoAdm';
 import UserInfoAdm from './screens/Adm/UserInfoAdm';
-import UserRequerimentsAdm from './screens/Adm/UserRequerimentsAdm';
-import MyRequeriments from './screens/User/MyRequeriments';
-import RequerimentInfo from './screens/User/RequerimentInfo';
+import UserRequirementsAdm from './screens/Adm/UserRequirementsAdm';
+import MyRequirements from './screens/User/MyRequirements';
+import RequirementInfo from './screens/User/RequirementInfo';
 
 const Stack = createStackNavigator();
 
@@ -19,11 +19,11 @@ function MyStack() {
       <Stack.Screen name="Pages" component={Pages} />
       <Stack.Screen name="CreateAccount" component={CreateAccount} />
       <Stack.Screen name="PagesAdm" component={PagesAdm} />
-      <Stack.Screen name="RequerimentInfoAdm" component={RequerimentInfoAdm} />
+      <Stack.Screen name="RequirementInfoAdm" component={RequirementInfoAdm} />
       <Stack.Screen name="UserInfoAdm" component={UserInfoAdm} />
-      <Stack.Screen name="UserRequerimentsAdm" component={UserRequerimentsAdm} />
-      <Stack.Screen name="MyRequeriments" component={MyRequeriments} />
-      <Stack.Screen name="RequerimentInfo" component={RequerimentInfo} />
+      <Stack.Screen name="UserRequirementsAdm" component={UserRequirementsAdm} />
+      <Stack.Screen name="MyRequirements" component={MyRequirements} />
+      <Stack.Screen name="RequirementInfo" component={RequirementInfo} />
     </Stack.Navigator>
   );
 }

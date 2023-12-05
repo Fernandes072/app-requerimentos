@@ -1,13 +1,10 @@
 import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Image, Alert } from 'react-native';
-import {  Button, Text } from 'react-native-elements';
+import {  Text } from 'react-native-elements';
 import React, {useState, useEffect, useRef} from 'react';
 import { Picker } from '@react-native-picker/picker';
-import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../src/Services/Api';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function UsersAdm({navigation}) {
 
@@ -47,7 +44,6 @@ export default function UsersAdm({navigation}) {
     );
 
     const isValid = () => {
-        console.log(type, specification, reason);
         let error = false;
 
         if (type == null || type == "") {
@@ -78,11 +74,10 @@ export default function UsersAdm({navigation}) {
         );
     }
 
-    async function sendRequeriment() {
+    async function sendRequirement() {
         if (isValid()) {
-            console.log(user);
             try {
-                await api.post('/requeriments', {
+                await api.post('/requirements', {
                     type: type,
                     specification: specification,
                     reason: reason,
@@ -149,12 +144,12 @@ export default function UsersAdm({navigation}) {
 
                     <TextInput style={styles.input} 
                         onChangeText={value => {setReason(value); setIsReasonSubmitted(false)}} placeholder="Exposição de Motivos"
-                        onSubmitEditing={() => {setIsReasonSubmitted(true); sendRequeriment()}}
+                        onSubmitEditing={() => {setIsReasonSubmitted(true); sendRequirement()}}
                         onBlur={() => {setIsReasonSubmitted(true)}} ref={reasonRef} returnKeyType="done" 
                         value = {isReasonSubmitted ? (reason != null ? reason.trim() : reason) : reason}
                     />
 
-                    <TouchableOpacity style={styles.sendButton}  onPress={() => sendRequeriment()}>
+                    <TouchableOpacity style={styles.sendButton}  onPress={() => sendRequirement()}>
                         <Text style={styles.sendText}>Enviar Requerimento</Text>
                     </TouchableOpacity>
                 </View>

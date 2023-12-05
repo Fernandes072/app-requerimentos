@@ -1,8 +1,6 @@
-import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Image } from 'react-native';
-import {  Button, Text } from 'react-native-elements';
+import { ScrollView, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
-import { Feather } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
@@ -16,12 +14,11 @@ export default function UserInfoAdm({navigation}) {
     }, []);
 
     const back = () => {
-        console.log("back");
         navigation.pop();
     }
 
-    const goRequeriments = () => {
-        navigation.navigate('UserRequerimentsAdm');
+    const goRequirements = () => {
+        navigation.navigate('UserRequirementsAdm');
     }
 
     async function getUser(){
@@ -63,12 +60,13 @@ export default function UserInfoAdm({navigation}) {
                 <View style={styles.containerUser}>
 
                     <View style={styles.containerUserInfo}>
-                        <Text style={styles.userInfo}><Text style={styles.titleInfo}>Nome: </Text>{user && user.name}</Text>
+                        <Text style={styles.userInfo}><Text style={styles.titleInfo}>Nome: </Text>{user && user.firstName} {user && user.lastName}</Text>
                         <Text style={styles.userInfo}><Text style={styles.titleInfo}>Email: </Text>{user && user.email}</Text>
-                        <Text style={styles.userInfo}><Text style={styles.titleInfo}>Curso: </Text>{user && user.courseId.name}</Text>
+                        <Text style={styles.userInfo}><Text style={styles.titleInfo}>Telefone: </Text>{user && user.phoneNumber}</Text>
+                        <Text style={styles.userInfo}><Text style={styles.titleInfo}>Curso: </Text>{user && user.course}</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.optionButton}  onPress={() => goRequeriments()}>
+                    <TouchableOpacity style={styles.optionButton}  onPress={() => goRequirements()}>
                         <Text style={styles.optionText}>Requerimentos</Text>
                     </TouchableOpacity>
 

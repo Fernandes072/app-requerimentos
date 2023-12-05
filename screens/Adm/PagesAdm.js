@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import UsersAdm from './UsersAdm';
 import Profile from '../Profile';
-import RequerimentsAdm from './RequerimentsAdm';
+import RequirementsAdm from './RequirementsAdm';
 
 
 const Tab = createBottomTabNavigator();
@@ -32,8 +30,8 @@ export default function PagesAdm() {
         }}
       />
       <Tab.Screen
-        name="RequerimentsAdm"
-        component={RequerimentsAdm}
+        name="RequirementsAdm"
+        component={RequirementsAdm}
         options={{
           tabBarLabel: 'Requerimentos',
           tabBarIcon: ({ color, size }) => (
