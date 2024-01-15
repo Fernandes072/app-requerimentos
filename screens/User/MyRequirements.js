@@ -6,14 +6,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
+
+//página de requerimentos do usuário
+//exibe informações básicas dos requerimentos
 export default function MyRequirements({navigation}) {
 
     const [requirements, setRequirements] = useState([]);
 
+    //ao carregar a página, busca os requerimentos do usuário
     useEffect(() => {
         getRequirements();
     }, []);
 
+    //cada vez que a página é focada, busca os requerimentos do usuário, para manter atualizado
     useFocusEffect(
         React.useCallback(() => {
             getRequirements();
@@ -25,6 +30,7 @@ export default function MyRequirements({navigation}) {
         navigation.pop();
     }
 
+    //função que usa a api para buscar os requerimentos do usuário, através do Item 'user'
     async function getRequirements(){
         try {
             const user = JSON.parse(await AsyncStorage.getItem('user'));
@@ -39,6 +45,8 @@ export default function MyRequirements({navigation}) {
         navigation.navigate('RequirementInfo');
     }
 
+    //busca o requerimento selecionado e salva no Item 'infoRequirement'
+    //para exibir as informações do requerimento na pagina RequirementInfo
     async function showRequirement (requirementId) {
         try {
             const response = await api.get(`/requirements/${requirementId}`);

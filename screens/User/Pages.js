@@ -4,7 +4,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Profile from '../Profile';
 import SendRequirement from './SendRequirement';
 
-
+//tela de navegação do usuário comum
+//a partir dessa tela, o usuário pode acessar a tela de perfil e a tela de enviar requerimento
 const Tab = createBottomTabNavigator();
 
 export default function Pages() {

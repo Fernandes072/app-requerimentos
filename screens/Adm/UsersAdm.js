@@ -5,6 +5,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../src/Services/Api';
 
+
+//exibe todos os usuários
+//permite buscar usuários pelo nome ou pela matrícula
 export default function UsersAdm({navigation}) {
 
     const [users, setUsers] = useState([]);
@@ -18,6 +21,7 @@ export default function UsersAdm({navigation}) {
         }, [])
     );
 
+    //se o campo de busca estiver vazio, busca todos os usuários
     useEffect(() => {
         if (search != '' && search != null) {
           searchUsers();
@@ -30,6 +34,7 @@ export default function UsersAdm({navigation}) {
         navigation.navigate('UserInfoAdm');
     }
 
+    //usa a api para buscar todos os usuários
     async function getUsers(){
         try {
             const response = await api.get(`/users`);
@@ -39,6 +44,7 @@ export default function UsersAdm({navigation}) {
         }
     }
 
+    //usa a api para buscar os usuários com base na pesquisa
     async function searchUsers(){
         try {
             const response = await api.get(`/users/search/${search}`);

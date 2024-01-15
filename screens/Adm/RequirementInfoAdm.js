@@ -5,6 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
+
+//exibe todas as informações do requerimento selecionado
+//permite excluir o requerimento
 export default function RequirementInfoAdm({navigation}) {
 
     const [requirement, setRequirement] = useState();
@@ -25,6 +28,7 @@ export default function RequirementInfoAdm({navigation}) {
         }
     }
 
+    //usa a api para apagar o requerimento selecionado
     async function deleteRequirement(){
         try {
             await api.delete(`/requirements/${requirement.requirementId}`);

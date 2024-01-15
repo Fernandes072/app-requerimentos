@@ -11,7 +11,7 @@ import MyRequirements from './screens/User/MyRequirements';
 import RequirementInfo from './screens/User/RequirementInfo';
 
 const Stack = createStackNavigator();
-
+//declaração de todas as telas do aplicativo
 function MyStack() { 
   return (
     <Stack.Navigator screenOptions={{headerShown:false}}>

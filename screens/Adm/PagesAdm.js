@@ -5,7 +5,8 @@ import UsersAdm from './UsersAdm';
 import Profile from '../Profile';
 import RequirementsAdm from './RequirementsAdm';
 
-
+//tela de navegação do usuário administrador
+//a partir dessa tela, o administrador pode acessar a tela de perfil, a tela de usuários e a tela de requerimentos
 const Tab = createBottomTabNavigator();
 
 export default function PagesAdm() {

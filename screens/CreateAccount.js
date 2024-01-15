@@ -7,6 +7,7 @@ import api from '../src/Services/Api';
 
 export default function CreateAccount({navigation}) {
 
+    //armazenar os campos digitados
     const[firstName, setFirstName] = useState(null);
     const[lastName, setLastName] = useState(null);
     const[phoneNumber, setPhoneNumber] = useState(null);
@@ -42,6 +43,7 @@ export default function CreateAccount({navigation}) {
     const passwordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
 
+    //validação dos campos
     const isValid = async () => {
         let error = false;
 
@@ -153,6 +155,7 @@ export default function CreateAccount({navigation}) {
         return findedUsername;
     }
 
+    //usa a api para criar uma conta com os dados digitados
     const createAccount = async () => {
         if ((await isValid())) {
             try {

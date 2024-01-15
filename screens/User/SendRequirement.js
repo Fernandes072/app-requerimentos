@@ -6,6 +6,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../src/Services/Api';
 
+
+//tela para envio de requerimento
+//o usuário seleciona o tipo de requerimento, escreve a justificativa
+//se o tipo for "Outros", o usuário deve escrever a especificação
 export default function UsersAdm({navigation}) {
 
     const [type, setType] = useState(null);
@@ -33,6 +37,7 @@ export default function UsersAdm({navigation}) {
         getUser();
     }, []);
 
+    //ao entrar na tela, limpa os campos
     useFocusEffect(
         React.useCallback(() => {
             setType(null);
@@ -43,6 +48,7 @@ export default function UsersAdm({navigation}) {
         }, [])
     );
 
+    //verifica se os campos estão preenchidos corretamente
     const isValid = () => {
         let error = false;
 
@@ -63,6 +69,7 @@ export default function UsersAdm({navigation}) {
         return !error;
     }
 
+    //caso o tipo seja "Outros", exibe o campo de especificação
     const printSpecification = () => {
         return (
         <TextInput style={styles.input} 
@@ -74,6 +81,8 @@ export default function UsersAdm({navigation}) {
         );
     }
 
+    //utiliza a api para enviar o requerimento
+    //quando o requerimento é enviado, limpa os campos e exibe um alerta de sucesso
     async function sendRequirement() {
         if (isValid()) {
             try {

@@ -4,6 +4,8 @@ import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+//exibe a imagem do usuário, nome e matrícula
+//permite ver os requerimentos do usuário e sair da conta
 export default function Profile({navigation}) {
 
     const [user, setUser] = useState();
@@ -20,6 +22,7 @@ export default function Profile({navigation}) {
         }
     }
 
+    //ao sair da conta, deleta o Item 'user'
     async function deleteSave(){
         try {
             await AsyncStorage.removeItem('user');
@@ -29,6 +32,7 @@ export default function Profile({navigation}) {
         }
     }
 
+    //sair da conta
     const exit = () => {
       navigation.reset({ 
           index: 0,
@@ -39,7 +43,7 @@ export default function Profile({navigation}) {
     const goMyRequirements = () => {
         navigation.navigate('MyRequirements');
     }
-  
+
     return (
         <View style={styles.container}>
 

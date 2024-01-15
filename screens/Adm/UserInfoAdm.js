@@ -5,6 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
+
+//exibe todas as informações do usuário selecionado
+//permite excluir o usuário
+//permite ver os requerimentos do usuário
 export default function UserInfoAdm({navigation}) {
 
     const [user, setUser] = useState();
@@ -29,6 +33,7 @@ export default function UserInfoAdm({navigation}) {
         }
     }
 
+    //usa a api para apagar o usuário selecionado
     async function deleteUser(){
         try {
             await api.delete(`/users/${user.registration}`);

@@ -5,6 +5,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../src/Services/Api';
 
+
+//exibe todos os requerimentos
+//permite buscar requerimentos pelo número do requerimento ou pela matrícula do usuário
 export default function RequirementsAdm({navigation}) {
 
     const [requirements, setRequirements] = useState([]);
@@ -18,6 +21,7 @@ export default function RequirementsAdm({navigation}) {
         }, [])
     );
 
+    //se o campo de busca estiver vazio, busca todos os requerimentos
     useEffect(() => {
         if (search != '' && search != null) {
             searchRequirements();
@@ -30,6 +34,7 @@ export default function RequirementsAdm({navigation}) {
         navigation.navigate('RequirementInfoAdm');
     }
 
+    //usa a api para buscar todos os requerimentos
     async function getRequirements(){
         try {
             const response = await api.get(`/requirements`);
@@ -39,6 +44,7 @@ export default function RequirementsAdm({navigation}) {
         }
     }
 
+    //usa a api para buscar os requerimentos com base na pesquisa
     async function searchRequirements(){
         try {
             const response = await api.get(`/requirements/search/${search}`);

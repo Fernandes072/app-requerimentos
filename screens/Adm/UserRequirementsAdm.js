@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
+
+//exibe todos os requerimentos do usuário selecionado
 export default function UserRequirementsAdm({navigation}) {
 
     const [requirements, setRequirements] = useState([]);

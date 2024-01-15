@@ -6,15 +6,21 @@ import api from '../src/Services/Api';
 
 export default function Login({navigation}) {
 
+    //armazenar o usuário e a senha digitados
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
     const [errorLogin, setErrorLogin] = useState(null);
 
+    //armazenar a verifição se um campo foi submetido, para apagar os espaços antes e depois
     const [isUsernameSubmitted, setIsUsernameSubmitted] = useState(false);
 
+    //clicar na opção do teclado de submeter e ir para o próximo campo
     const passwordRef = useRef(null);
 
+    //usa a api para buscar o username e verificar se a senha é igual
+    //verifica também se o usuário é um administrador
+    //quando faz o login, salva o usuário no Item 'user'
     async function loginVerify(){
         try {
             const response = await api.get(`/users/username/${username}`);
@@ -35,10 +41,13 @@ export default function Login({navigation}) {
         }
     }
 
+    //ao carregar a página, utiliza o loadSave()
     useEffect(() => {
         loadSave();
     }, []);
 
+    //verifica se tem algum valor guardado no Item 'user'
+    //se houver, pula a página de login e carrega a página do usuário
     async function loadSave(){
         try {
             const user = await AsyncStorage.getItem('user');
@@ -54,6 +63,7 @@ export default function Login({navigation}) {
         }
     }
 
+    //vai para a página Pages e reseta a pilha
     const login = () => {
         navigation.reset({ 
             index: 0,
@@ -61,6 +71,7 @@ export default function Login({navigation}) {
         });
     }
 
+    //vai para a página PagesAdm e reseta a pilha
     const loginAdm = () => {
         navigation.reset({ 
             index: 0,
@@ -68,6 +79,7 @@ export default function Login({navigation}) {
         });
     }
 
+    //vai para a página CreateAccount e coloca duas páginas na pilha
     const createAccount = () => {
         navigation.reset({ 
             index: 1,
@@ -76,6 +88,10 @@ export default function Login({navigation}) {
             ],
         });
     }
+
+    //os text input armazenam o valor digitado nas variáveis
+    //verifica se o campo foi submetido, se sim, apaga os espaços antes e depois
+    //ao submeter o campo, vai para o próximo usando o current.focus()
 
     return (
         <ScrollView style={styles.container}>
@@ -88,7 +104,7 @@ export default function Login({navigation}) {
             </View>
 
             <View style={styles.containerForm}>
-                <TextInput style={styles.input} 
+                <TextInput style={styles.input}
                     onChangeText={value => {setUsername(value); setIsUsernameSubmitted(false)}} placeholder="Usuário" returnKeyType="next" 
                     onSubmitEditing={() => {passwordRef.current.focus(); setIsUsernameSubmitted(true)}}
                     onBlur={() => {setIsUsernameSubmitted(true)}} autoCapitalize='none'

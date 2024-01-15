@@ -4,6 +4,8 @@ import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+
+//exibe todas as informações do requerimento selecionado
 export default function RequirementsInfoAdm({navigation}) {
 
     const [requirement, setRequirement] = useState();
@@ -16,6 +18,7 @@ export default function RequirementsInfoAdm({navigation}) {
         navigation.pop();
     }
 
+    //pega as informações armazenadas no Item 'infoRequirement', para exibir na tela
     async function getRequirement(){
         try {
             setRequirement(JSON.parse(await AsyncStorage.getItem('infoRequirement')));
