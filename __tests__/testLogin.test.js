@@ -13,10 +13,12 @@ describe('Tela de login', () => {
 
     beforeEach(() => {
         mock = new MockAdapter(api);
+        jest.spyOn(console, 'log').mockImplementation(() => {});
     });
 
     afterEach(() => {
         mock.reset();
+        console.log.mockRestore();
     });
 
     it('Renderização de todos os componentes', () => {
@@ -27,7 +29,7 @@ describe('Tela de login', () => {
         expect(getByText('Registre-se')).toBeTruthy();
     });
 
-    it('Login com sucesso para administrador', async () => {
+    it('Campos válidos e tipo administrador deve ir para o modo administrador', async () => {
         mock.onGet('/users/username/valido').reply(200, {
             username: 'valido',
             password: 'valido123',
@@ -45,7 +47,7 @@ describe('Tela de login', () => {
         });
     });
 
-    it('Login com sucesso para usuário comum', async () => {
+    it('Campos válidos e tipo usuário deve ir para o modo usuário', async () => {
         mock.onGet('/users/username/valido').reply(200, {
             username: 'valido',
             password: 'valido123',
@@ -63,7 +65,7 @@ describe('Tela de login', () => {
         });
     });
 
-    it('Login sem sucesso - usuário e senha incorretos', async () => {
+    it('Usuário e senha incorretos deve exibir usuário e senha incorretos', async () => {
         mock.onGet('/users/username/invalido').reply(404);
 
         const {getByPlaceholderText, getByText} = render(<Login navigation={mockNavigation} />);
@@ -77,7 +79,7 @@ describe('Tela de login', () => {
         });
     });
 
-    it('Login sem sucesso - senha incorreta', async () => {
+    it('Senha incorreta deve exibir usuário e senha incorretos', async () => {
         mock.onGet('/users/username/valido').reply(200, {
             username: 'valido',
             password: 'valido123',
@@ -95,7 +97,7 @@ describe('Tela de login', () => {
         });
     });
 
-    it('Login sem sucesso com os campos vazios', async () => {
+    it('Campos vazios deve exibir usuário e senha incorretos', async () => {
         mock.onGet('/users/username/').reply(404);
 
         const {getByPlaceholderText, getByText} = render(<Login navigation={mockNavigation} />);
@@ -109,7 +111,7 @@ describe('Tela de login', () => {
         });
     });
 
-    it('Login automático se o usuário estiver armazenado', async () => {
+    it('Usuário armazenado deve fazer login automático', async () => {
         AsyncStorage.getItem = jest.fn(() => Promise.resolve(JSON.stringify({ username: 'userTest', administrator: 'no' })));
         render(<Login navigation={mockNavigation}/>);
   

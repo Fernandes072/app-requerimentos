@@ -256,6 +256,7 @@ export default function CreateAccount({navigation}) {
                             selectedValue={course}
                             onValueChange={value => setCourse(value)}
                             style={styles.picker}
+                            testID="course"
                         >
                         <Picker.Item label="Selecione um curso" value="" />
                         <Picker.Item label="Ciência da Computação" value="Ciência da Computação" />
