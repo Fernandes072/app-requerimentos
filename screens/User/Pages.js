@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Image } from 'react-native';
 import Profile from '../Profile';
 import SendRequirement from './SendRequirement';
 
@@ -25,7 +25,13 @@ export default function Pages() {
         options={{
           tabBarLabel: 'Requerimento',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <Image 
+              source={require('../../assets/home.png')}
+              style={{width: 20, height: 20}}
+              testID="Inicio"
+              tintColor={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -35,7 +41,13 @@ export default function Pages() {
         options={{
           tabBarLabel: 'Perfil',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+            <Image 
+              source={require('../../assets/profile.png')}
+              style={{width: 20, height: 20}}
+              testID="Perfil"
+              tintColor={color}
+              size={size}
+            />
           ),
         }}
       />

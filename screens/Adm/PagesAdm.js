@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Image } from 'react-native';
 import UsersAdm from './UsersAdm';
 import Profile from '../Profile';
 import RequirementsAdm from './RequirementsAdm';
@@ -26,7 +26,13 @@ export default function PagesAdm() {
         options={{
           tabBarLabel: 'Usuários',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-supervisor" color={color} size={size} />
+            <Image 
+            source={require('../../assets/users.png')}
+            style={{width: 20, height: 20}}
+            testID="Usuarios"
+            tintColor={color}
+            size={size}
+          />
           ),
         }}
       />
@@ -36,7 +42,13 @@ export default function PagesAdm() {
         options={{
           tabBarLabel: 'Requerimentos',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-supervisor" color={color} size={size} />
+            <Image 
+            source={require('../../assets/requirement.png')}
+            style={{width: 20, height: 20}}
+            testID="Requerimentos"
+            tintColor={color}
+            size={size}
+          />
           ),
         }}
       />
@@ -46,7 +58,13 @@ export default function PagesAdm() {
         options={{
           tabBarLabel: 'Perfil',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+            <Image 
+            source={require('../../assets/profile.png')}
+            style={{width: 20, height: 20}}
+            testID="Perfil"
+            tintColor={color}
+            size={size}
+          />
           ),
         }}
       />

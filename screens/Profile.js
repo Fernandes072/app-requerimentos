@@ -2,7 +2,6 @@ import { ScrollView, StyleSheet, TouchableOpacity, View, Image } from 'react-nat
 import {  Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 //exibe a imagem do usuário, nome e matrícula
 //permite ver os requerimentos do usuário e sair da conta
@@ -54,7 +53,11 @@ export default function Profile({navigation}) {
                 <View style={styles.containerHeader}>
                     <Image source={user && user.image != null ? {uri:user.image} : require('../assets/user.png')} style={styles.imageUser} />
                     <TouchableOpacity onPress={() => console.log("Abc")} style={styles.icon}>
-                        <MaterialCommunityIcons name="account-edit" size={28} />
+                        <Image 
+                            source={require('../assets/edit.png')}
+                            style={{ width: 25, height: 25 }}
+                            testID="Editar"
+                        />
                     </TouchableOpacity>  
                     <Text h4> {user && user.firstName} </Text>
                     <Text h5> {user && user.registration} </Text>
@@ -65,7 +68,11 @@ export default function Profile({navigation}) {
                         <Text style={styles.optionText}>Meus requerimentos</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.optionButton}  onPress={() => deleteSave()}>
-                        <MaterialCommunityIcons name="logout" size={28} style={styles.icon}/>
+                        <Image 
+                            source={require('../assets/exit.png')}
+                            style={[styles.icon, { width: 20, height: 20, marginLeft: '3%'}]}
+                            testID="Sair"
+                        />
                         <Text style={styles.optionText}>Sair</Text>
                     </TouchableOpacity>
                 </View>

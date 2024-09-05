@@ -2,7 +2,6 @@ import { useState, useRef } from 'react';
 import { StyleSheet, View, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../src/Services/Api';
 
 export default function CreateAccount({navigation}) {
@@ -192,7 +191,11 @@ export default function CreateAccount({navigation}) {
 
             <View style={styles.containerArrowBack}>
                 <TouchableOpacity onPress={() => back()} style={styles.arrowBack}>
-                    <MaterialCommunityIcons name="arrow-left" size={30} />
+                    <Image 
+                        source={require('../assets/arrow-left.png')}
+                        style={{ width: 30, height: 30 }}
+                        testID="Voltar"
+                    />
                 </TouchableOpacity>
             </View>
 
