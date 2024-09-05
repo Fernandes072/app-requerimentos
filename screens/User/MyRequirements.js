@@ -3,7 +3,6 @@ import {  Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
 
@@ -66,7 +65,11 @@ export default function MyRequirements({navigation}) {
         
             <View style={styles.containerHeader}>
                 <TouchableOpacity onPress={() => back()} style={styles.arrowBack}>
-                    <MaterialCommunityIcons name="arrow-left" size={30} />
+                    <Image 
+                        source={require('../../assets/arrow-left.png')}
+                        style={{ width: 30, height: 30 }}
+                        testID="Voltar"
+                    />
                 </TouchableOpacity>
                 <Image 
                     source={require('../../assets/logo.png')}
