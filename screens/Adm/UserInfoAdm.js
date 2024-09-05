@@ -2,7 +2,6 @@ import { ScrollView, StyleSheet, TouchableOpacity, View, Image } from 'react-nat
 import { Text } from 'react-native-elements';
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../src/Services/Api';
 
 
@@ -53,7 +52,11 @@ export default function UserInfoAdm({navigation}) {
 
                 <View style={styles.containerHeader}>
                     <TouchableOpacity onPress={() => back()} style={styles.arrowBack}>
-                        <MaterialCommunityIcons name="arrow-left" size={30} />
+                        <Image 
+                            source={require('../../assets/arrow-left.png')}
+                            style={{ width: 30, height: 30 }}
+                            testID="Voltar"
+                        />
                     </TouchableOpacity>
                     <Image 
                         source={require('../../assets/logo.png')}
