@@ -1,6 +1,5 @@
 import MockAdapter from 'axios-mock-adapter';
 import api from '../src/Services/Api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import CreateAccount from '../screens/CreateAccount';
 
@@ -67,7 +66,7 @@ describe('Tela de criar conta', () => {
         fireEvent.changeText(getByPlaceholderText('Email'), 'joses@gmail.com');
         fireEvent.changeText(getByPlaceholderText('Matrícula'), '2020321145');
         fireEvent.changeText(getByPlaceholderText('Usuário'), 'josesilva');
-        fireEvent.changeText(getByPlaceholderText('Senha'), '123456');
+        fireEvent.changeText(getByPlaceholderText('Senha'), '1234567');
         fireEvent.changeText(getByPlaceholderText('Confirmar senha'), '1234567');
         fireEvent(getByTestId('course'), 'valueChange', 'Ciência da Computação');
         fireEvent.press(getByText('Criar conta'));
