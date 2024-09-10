@@ -126,6 +126,7 @@ export default function UsersAdm({navigation}) {
                             selectedValue={type}
                             onValueChange={value => setType(value)}
                             style={styles.picker}
+                            testID="tipo"
                         >
                             <Picker.Item label="Selecione um tipo" value="" />
                             <Picker.Item label="Atualização de Dados Pessoais" value="Atualização de Dados Pessoais" />

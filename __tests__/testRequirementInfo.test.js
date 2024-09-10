@@ -4,7 +4,6 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import RequirementInfo from '../screens/User/RequirementInfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import { type } from '@testing-library/react-native/build/user-event/type';
 
 const mockNavigation = {
     pop: jest.fn(),
@@ -12,7 +11,7 @@ const mockNavigation = {
     navigate: jest.fn(),
   };
 
-describe('Tela de meus requerimentos', () => {
+describe('Tela de informações do requerimento', () => {
     let mock;
 
     beforeEach(() => {
@@ -73,6 +72,4 @@ describe('Tela de meus requerimentos', () => {
             expect(getByText('Motivos: Atestado médico para justificar falta do dia 25/12')).toBeTruthy();
         });
     });
-
-    
 });
